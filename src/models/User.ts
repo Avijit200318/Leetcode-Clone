@@ -4,6 +4,7 @@ export interface IUser extends Document{
     username: string,
     email: string,
     password: string,
+    avatar: string,
     bio?: string,
     country?: string,
     unversity?: string,
@@ -47,6 +48,10 @@ const userSchema = new Schema<IUser>({
     },
     country: {
         type: String
+    },
+    avatar: {
+        type: String,
+        default: "https://raw.githubusercontent.com/Volosh1n/github-avatars/master/examples/image.png"
     },
     verifyCode: {
         type: String,

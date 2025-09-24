@@ -42,6 +42,8 @@ export async function POST(req: NextRequest) {
         const existingUserButNotVerified = await userModel.findOne({email});
         const verifyCode = Math.floor(10000 + Math.random() * 900000).toString();
         const hashPassword = await bcrypt.hash(password, 10);
+        // to track our userid
+        let userId;
 
         if(existingUserButNotVerified){
             // we have to update password, username and send verification email
@@ -51,6 +53,7 @@ export async function POST(req: NextRequest) {
             existingUserButNotVerified.verifyCodeExpiry = new Date(Date.now() + (5 * 60 * 1000));
 
             await existingUserButNotVerified.save();
+            userId = existingUserButNotVerified._id;
         }
         else{
             const expiryDate = new Date();
@@ -66,6 +69,8 @@ export async function POST(req: NextRequest) {
                 submission: [],
                 solvedQuestions: []
             });
+
+            userId = newUser._id;
         }
 
         // send verification email
@@ -80,7 +85,8 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({
             success: true,
-            message: "User registered successfully. Please verify your email"
+            message: "User registered successfully. Please verify your email",
+            userId
         }, {status: 201});
     } catch (error) {
         console.error("Error registering user: ", error);

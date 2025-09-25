@@ -1,10 +1,11 @@
 import { IUser } from "@/models/User";
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
 export interface ApiResponse {
     success: boolean,
     message: string,
     user?: IUser,
+    userId?: string | mongoose.Types.ObjectId,
     solutions?: Array<mongoose.Types.ObjectId>,
     submission?: Array<mongoose.Types.ObjectId>,
     solvedQuestions?: Array<mongoose.Types.ObjectId>

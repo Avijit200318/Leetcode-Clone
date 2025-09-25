@@ -29,7 +29,7 @@ export default function VerificationEmail({username, otp}: VerificationEmailProp
                 </Row>
                 <Row>
                     <Text>
-                        Thank you for registering leetcode-clone(developed by Avijit). Please use the following 
+                        Thank you for registering leetcode-clone (developed by Avijit). Please use the following 
                         code to complete your registration:
                     </Text>
                 </Row>

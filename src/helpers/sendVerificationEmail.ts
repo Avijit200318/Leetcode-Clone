@@ -8,7 +8,7 @@ export const sendVerificationEmail = async (email: string, username: string, ver
         await resend.emails.send({
             from: 'onboarding@resend.dev',
             to: email,
-            subject: "Leetcode-Clone(NEXT JS Project) Verification Code",
+            subject: "Leetcode-Clone (NEXT JS Project) Verification Code",
             react: VerificationEmail({username, otp: verifyCode})
         });
         

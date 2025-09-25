@@ -80,11 +80,11 @@ export default function page() {
 
   return (
     <div className='w-full h-screen flex justify-center items-center'>
-      <div className="max-w-md border-2 py-4 px-8 rounded-2xl flex flex-col items-center">
+      <div className="w-[32rem] border-2 py-4 px-8 rounded-2xl flex flex-col items-center relative">
         <div className="logo">
           {theme === "dark"? <img src="/logo dark.png" alt="" /> : <img src="/logo.svg" alt="" />}
         </div>
-        <div className="">
+        <div className="w-full">
           <h1 className='text-3xl mt-8 mb-2 font-semibold'>Create Account</h1>
           <p className="text-sm w-[90%]">Join our community to start solving coding challenges and improving your skills.</p>
         </div>

@@ -30,8 +30,7 @@ export default function page() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [mounted, setMounted] = useState<boolean>(false);
   const router = useRouter();
-  const { theme } = useTheme();
-  console.log("theme: ", theme)
+  const { theme, systemTheme, setTheme } = useTheme();
 
   // zod validation + react hook form
   const form = useForm<z.infer<typeof signUpValidation>>({
@@ -73,6 +72,13 @@ export default function page() {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (!mounted) return;
+    if(theme && systemTheme){
+      setTheme(systemTheme);
+    }
+  }, [mounted]);
+
   // this line help us to avoid theme hydration error
   if (!mounted) {
     return null;
@@ -82,7 +88,7 @@ export default function page() {
     <div className='w-full h-screen flex justify-center items-center'>
       <div className="w-[32rem] border-2 py-4 px-8 rounded-2xl flex flex-col items-center relative">
         <div className="logo">
-          {theme === "dark"? <img src="/logo dark.png" alt="" /> : <img src="/logo.svg" alt="" />}
+          {(theme === "dark")? <img src="/logo dark.png" alt="" /> : <img src="/logo.svg" alt="" />}
         </div>
         <div className="w-full">
           <h1 className='text-3xl mt-8 mb-2 font-semibold'>Create Account</h1>

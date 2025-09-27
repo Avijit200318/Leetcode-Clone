@@ -31,7 +31,7 @@ export default function page() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [mounted, setMounted] = useState<boolean>(false);
   const router = useRouter();
-  const { theme } = useTheme();
+  const { theme, systemTheme, setTheme } = useTheme();
   const { userId } = useParams();
 
   // zod validation + react hook form
@@ -69,16 +69,23 @@ export default function page() {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+      if (!mounted) return;
+      if(theme && systemTheme){
+        setTheme(systemTheme);
+      }
+    }, [mounted]);
+
   // this line help us to avoid theme hydration error
   if (!mounted) {
     return null;
   }
 
   return (
-    <div className='w-full h-screen flex justify-center items-center'>
+    <div className='w-full h-[calc(100vh-4rem)] flex justify-center items-center'>
       <div className="w-[32rem] border-2 py-8 px-8 rounded-2xl flex flex-col items-center">
         <div className="logo">
-          {theme === "dark"? <img src="/logo dark.png" alt="" /> : <img src="/logo.svg" alt="" />}
+          {(theme === "dark")? <img src="/logo dark.png" alt="" /> : <img src="/logo.svg" alt="" />}
         </div>
         <div className="w-full">
           <h1 className='text-3xl mt-8 mb-2 font-semibold'>Verify Your Account</h1>
@@ -103,7 +110,7 @@ export default function page() {
         </Form>
         <div className="w-full flex gap-2 items-center my-4">
           <p>Verification issue?</p>
-          <Link href="/sign-up" className='font-semibold' >Sign up</Link>
+          <Link href="/sign-up" className='font-semibold' >Sign up again</Link>
         </div>
       </div>
     </div>

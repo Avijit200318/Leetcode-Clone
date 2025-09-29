@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signUpValidation } from '@/schemas/signUpSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2 } from 'lucide-react';
+import { Eye, EyeClosed, Loader2 } from 'lucide-react';
 import { ApiResponse } from '@/types/ApiResponse';
 import { toast } from 'sonner';
 
@@ -29,6 +29,7 @@ import { useTheme } from 'next-themes';
 export default function page() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [mounted, setMounted] = useState<boolean>(false);
+  const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
   const router = useRouter();
   const { theme, systemTheme, setTheme } = useTheme();
 
@@ -74,10 +75,14 @@ export default function page() {
 
   useEffect(() => {
     if (!mounted) return;
-    if(theme && systemTheme){
+    if (theme && systemTheme) {
       setTheme(systemTheme);
     }
   }, [mounted]);
+
+  const handlePasswordShow = () => {
+    setIsShowingPassword(!isShowingPassword);
+  }
 
   // this line help us to avoid theme hydration error
   if (!mounted) {
@@ -88,7 +93,7 @@ export default function page() {
     <div className='w-full h-screen flex justify-center items-center'>
       <div className="w-[32rem] border-2 py-4 px-8 rounded-2xl flex flex-col items-center relative">
         <div className="logo">
-          {(theme === "dark")? <img src="/logo dark.png" alt="" /> : <img src="/logo.svg" alt="" />}
+          {(theme === "dark") ? <img src="/logo dark.png" alt="" /> : <img src="/logo.svg" alt="" />}
         </div>
         <div className="w-full">
           <h1 className='text-3xl mt-8 mb-2 font-semibold'>Create Account</h1>
@@ -129,7 +134,10 @@ export default function page() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type='password' placeholder="Password" {...field} className='text-base p-4 h-11' />
+                    <div className="relative w-auto h-auto">
+                      <Input type={isShowingPassword ? 'text' : 'password'} placeholder="Password" {...field} className='text-base p-4 h-11' />
+                      {isShowingPassword ? <Eye onClick={handlePasswordShow} className={`absolute right-0 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer ${theme === "dark" ? 'text-neutral-400' : ''}`} /> : <EyeClosed onClick={handlePasswordShow} className={`absolute right-0 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer ${theme === "dark" ? 'text-neutral-400' : ''}`} />}
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

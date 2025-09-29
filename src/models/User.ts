@@ -12,6 +12,7 @@ export interface IUser extends Document{
     verifyCode: string,
     verifyCodeExpiry: Date,
     isVerified: boolean,
+    forgetPasswordExpiry: Date | null,
     solvedProblems: number,
     solutions: Types.ObjectId[],
     submission: Types.ObjectId[],
@@ -64,6 +65,10 @@ const userSchema = new Schema<IUser>({
     isVerified: {
         type: Boolean,
         default: false
+    },
+    forgetPasswordExpiry: {
+        type: Date,
+        default: null
     },
     solvedProblems: {
         type: Number,

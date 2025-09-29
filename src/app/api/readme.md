@@ -92,3 +92,93 @@ The response will be a JSON object with the following fields:
     "message": "Account verified successfully",
 }
 ```
+## Endpoint: `/api/auth/forget-password-mail`
+
+### Description
+This endpoint initiates the **password reset process** by sending a verification code to the user’s registered email address. It performs the following actions:
+
+- Checks if the `email` field is provided in the request body.
+- Validates the `email` format using the `forgetPasswordSchema`.
+- Finds the user in the database by their email.
+- If the user exists:
+  - Generates a 6-digit verification code.
+  - Sets the `forgetPasswordExpiry` to 5 minutes from the current time.
+  - Updates the `verifyCode` in the user record.
+  - Sends a verification email containing the reset code.
+- If successful, responds with a success message confirming that the email was sent.
+
+### Method
+`POST`
+
+### Request Body
+
+Send a JSON object with the following fields:
+
+- `email`: A valid registered email address (required)
+
+#### Example Request
+```json
+{
+  "email": "john@example.com"
+}
+```
+### Example Response
+The response will be a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful (`true`) or not (`false`).
+- `message` (string): Provides additional information about the result. For example, success confirmation or error description.
+### Success Response
+```json
+{
+    "success": true,
+    "message": "Email send successfully"
+}
+```
+## Endpoint: `/api/auth/forget-password`
+
+### Description
+This endpoint allows a user to **reset their password** using the verification code sent to their email during the forget password process. It performs the following actions:
+
+- Checks if all required fields (`email`, `password`, `code`) are provided.
+- Validates the input fields using the `forgetPasswordValidation` schema.
+- Retrieves the user from the database using the provided `email`.
+- Ensures the user exists.
+- Compares the provided verification code with the one stored in the database.
+- Ensures the verification code has not expired (valid for 5 minutes).
+- If valid:
+  - Hashes the new password with `bcrypt`.
+  - Updates the user’s password.
+  - Clears the `forgetPasswordExpiry`.
+- Responds with a success message when the password is updated successfully.
+
+### Method
+`POST`
+
+### Request Body
+
+Send a JSON object with the following fields:
+
+- `email`: The registered email address of the user (required)  
+- `password`: The new password to be set (required)  
+- `code`: The 6-digit verification code sent via email (required)  
+
+#### Example Request
+```json
+{
+  "email": "john@example.com",
+  "password": "newSecurePassword123!",
+  "code": "123456"
+}
+```
+### Example Response
+The response will be a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful (`true`) or not (`false`).
+- `message` (string): Provides additional information about the result. For example, success confirmation or error description.
+### Success Response
+```json
+{
+  "success": true,
+  "message": "Password updated successfully"
+}
+```

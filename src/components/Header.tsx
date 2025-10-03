@@ -33,8 +33,8 @@ export default function Header() {
   }
 
   return (
-    <header className='w-full h-16 border-b-2 flex items-center justify-between px-8'>
-        {(theme === "dark") ? <img src="/navLogo dark.png" alt="" className='h-8' /> : <img src="/navLogo light.png" alt="" className='h-8' />}
+    <header className='w-full h-12 border-b-2 flex items-center justify-between px-8'>
+        {(theme === "dark") ? <img src="/navLogo dark.png" alt="" className='h-6' /> : <img src="/navLogo light.png" alt="" className='h-6' />}
         {pathname.startsWith("/problem/")? <NavRunButtonsContainer theme={theme} session={session} /> : <NavLinks theme={theme} />}
       <div className="flex items-center gap-4">
         {!session && <div className='flex gap-4 items-center'>

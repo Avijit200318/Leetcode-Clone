@@ -120,3 +120,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+.markdown-body h1 .anchor,
+.markdown-body h2 .anchor,
+.markdown-body h3 .anchor,
+.markdown-body h4 .anchor,
+.markdown-body h5 .anchor,
+.markdown-body h6 .anchor {
+  /* This hides the icon completely for all headers */
+  display: none !important; 
+}

@@ -19,7 +19,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeClosed, Loader2 } from 'lucide-react';
-import { ApiResponse } from '@/types/ApiResponse';
 import { toast } from 'sonner';
 
 import { useTheme } from 'next-themes';

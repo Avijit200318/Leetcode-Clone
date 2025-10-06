@@ -2,19 +2,22 @@ import {Document, model, models, Schema, Types} from "mongoose";
 import { ISimilarQuestion } from "./SimilarQuestion";
 import { ISolution } from "./Solution";
 
+export interface ITextCase {
+    input: String,
+    output: String
+}
+
 export interface IProblem extends Document {
     title: string,
     level: string,
     description: string,
     examples: string,
     constraints: string,
-    starterTemplate: string,
-    testCases: string[],
-    outputs: string,
-    like: number,
-    dislike: number,
+    testCases: ITextCase[],
+    like?: number,
+    dislike?: number,
     topics: string,
-    companies: string,
+    companies?: string,
     similarQuestions: (Types.ObjectId[] | ISimilarQuestion[]),
     solutions: (Types.ObjectId[] | ISolution[]),
     createdAt?: Date,
@@ -24,6 +27,7 @@ export interface IProblem extends Document {
 const problemSchema = new Schema<IProblem>({
     title: {
         type: String,
+        unique: true,
         required: [true, "Title is required"],
         trim: true
     },
@@ -43,17 +47,16 @@ const problemSchema = new Schema<IProblem>({
         type: String,
         required: [true, "Constraints string is required"]
     },
-    starterTemplate: {
-        type: String
-    },
     testCases: [{
-        type: String,
-        required: [true, "Testcases required"]
+        input: {
+            type: String,
+            required: [true, "Input required"]
+        },
+        output: {
+            type: String,
+            required: [true, "Output required"]
+        }
     }],
-    outputs: {
-        type: String,
-        required: [true, "Output is required (is separated by ',')"]
-    },
     like: {
         type: Number,
         default: 0

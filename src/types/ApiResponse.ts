@@ -8,5 +8,6 @@ export interface ApiResponse {
     userId?: string | mongoose.Types.ObjectId,
     solutions?: Array<mongoose.Types.ObjectId>,
     submission?: Array<mongoose.Types.ObjectId>,
-    solvedQuestions?: Array<mongoose.Types.ObjectId>
+    solvedQuestions?: Array<mongoose.Types.ObjectId>,
+    problemId?: string | mongoose.Types.ObjectId
 }

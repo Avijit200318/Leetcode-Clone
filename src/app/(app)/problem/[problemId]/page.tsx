@@ -44,7 +44,7 @@ export default function page() {
                 <div className="flex gap-1 items-center text-sm px-2.5 py-1 rounded-full bg-[var(--sidebar-accent)]"><Tag className='resize-custom w-4' /> Topics</div>
                 <div className="flex gap-1 items-center text-sm px-2.5 py-1 rounded-full bg-[var(--sidebar-accent)] text-orange-400"><Lock className='resize-custom w-4' /> Companies</div>
               </div>
-              <div className="text w-full mt-4">
+              <div className="text w-full mt-4 ">
                 <MDEditor.Markdown source={twoSum.content} className="markdown-body w-full" style={{ background: "var(--card)" }} />
               </div>
 

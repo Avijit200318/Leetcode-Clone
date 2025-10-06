@@ -57,7 +57,7 @@ const userSchema = new Schema<IUser>({
     },
     avatar: {
         type: String,
-        default: "https://raw.githubusercontent.com/Volosh1n/github-avatars/master/examples/image.png"
+        default: "https://firebasestorage.googleapis.com/v0/b/x-next-e5030.appspot.com/o/default%20profile.png?alt=media&token=30c25630-f81e-41a3-97c3-e531c4e66825"
     },
     verifyCode: {
         type: String,

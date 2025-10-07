@@ -244,3 +244,107 @@ The response will be a JSON object with the following fields:
   "problemId": "6703f2c86b3c97b12c7dfba9"
 }
 ```
+## Endpoint: `/api/problem/get-problem?problemId=6702d9c8f8b...`
+
+### Description
+This endpoint allows you to **retrieve a specific problem** from the database using its MongoDB `problemId`.  
+It performs the following actions:
+
+- Connects to the database.
+- Validates the presence of the `problemId` query parameter.
+- Checks if the provided `problemId` is a valid MongoDB ObjectId using the `mongodbObjectId` schema.
+- Retrieves the problem document from the `Problem` collection.
+- Returns the problem data if found; otherwise, responds with an appropriate error message.
+
+### Method
+`GET`
+
+### Query Parameters
+
+- `problemId` (string): The unique MongoDB ObjectId of the problem you want to fetch (required).  
+  Example: `"6702d9c8f8b9b57a8a4c2e15"`
+
+### Example Request
+```bash
+GET /api/problem/get-problem?problemId=6702d9c8f8b9b57a8a4c2e15
+```
+### Example Response
+The response will be a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful (`true`) or not (`false`).
+- `message` (string): Provides additional information about the result. For example, success confirmation or error description.
+- `problem` (object): Contains the problem data retrieved from the database (only present on success).
+### Success Response
+```json
+{
+  "success": true,
+  "message": "Problem found successfully",
+  "problem": {
+    "_id": "6702d9c8f8b9b57a8a4c2e15",
+    "title": "1 Two Sum",
+    "level": "Medium",
+    "description": "Given an...",
+    "examples": "#### Example 1\n...",
+    "constraints": "2 <= nums.length <= 10^4",
+    "testCases": [
+      { "input": "nums = [2,7,11,15], target = 9", "output": "[0,1]" },
+      ...
+    ],
+    "topics": "Array, Hash Table",
+    "companies": "Google, Amazon, Microsoft",
+    "similarQuestions": [],
+    "solutions": []
+  }
+}
+```
+## Endpoint: `/api/problem/all-problems`
+
+### Description
+This endpoint retrieves **all available problems** from the database.  
+It is typically used to display a list of all coding problems for users or admins.  
+
+It performs the following actions:
+
+- Connects to the database.
+- Fetches all problem documents from the `Problem` collection.
+- Checks if there are any problems available.
+- Returns the list of problems if found, otherwise returns an appropriate message.
+
+### Method
+`GET`
+
+### Example Request
+```bash
+GET /api/problem/all-problems
+```
+### Example Response
+The response will be a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful (`true`) or not (`false`).
+- `message` (string): Provides additional information about the result. For example, success confirmation or error description.
+- `allProblems` (array of objects): Contains all problems from the database (only present on success).
+### Success Response
+```json
+{
+  "success": true,
+  "message": "All the problems found successfully",
+  "allProblems": [
+    {
+      "_id": "6703f2c86b3c97b12c7dfba9",
+      "title": "1 Two Sum",
+      "level": "Medium",
+      "description": "Given an array of integers...",
+      "examples": "#### Example 1\n-...",
+      "constraints": "2 <= nums.length <= 10^4",
+      "testCases": [
+        { "input": "nums = [2,7,11,15], target = 9", "output": "[0,1]" }
+      ],
+      "topics": "Array, Hash Table",
+      "companies": "Google, Amazon",
+      "similarQuestions": [],
+      "solutions": []
+    },
+    ...
+  ]
+}
+```

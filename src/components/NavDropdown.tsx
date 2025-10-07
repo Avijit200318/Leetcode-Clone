@@ -42,9 +42,7 @@ export default function NavDropdown({ session, signOut, theme }: NavDropdownProp
                                 </div>
                                 <div className="w-[70%] relative">
                                     <h2 className="text-2xl font-semibold truncate w-full">{session?.user.username}</h2>
-                                    {(session?.user.userType === "admin" && theme === "dark") ?
-                                        <img src="/admin text light.png" className={`w-16 mt-1 mb-2`} alt="" /> :
-                                        <img src="/admin text dark.png" className={`w-16 mt-1 mb-2`} alt="" />
+                                    {session?.user.userType === "admin" &&  <img src="/admin text dark.png" className={`w-16 mt-1 mb-2`} alt="" />
                                     }
 
                                     <p className="w-full text-sm leading-4 text-yellow-300">Access all features with our Premium subscription!</p>

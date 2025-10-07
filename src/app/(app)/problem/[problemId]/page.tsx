@@ -6,25 +6,62 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
 
-import { twoSum } from "./problem.js";
-import MDEditor from '@uiw/react-md-editor';
 import ProblemPageNavigation from '@/components/ProblemPageNavigation';
-import { Lock, Tag } from 'lucide-react';
 import { ScrollArea } from "@/components/ui/scroll-area"
 import ProblemSideFooter from '@/components/ProblemPageSideFooter';
-import { useTheme } from 'next-themes';
+import { useParams } from 'next/navigation.js';
 
-import ProblemPageCollapseButton from '@/components/ProblemPageCollapseButton';
+import { mongodbObjectId } from '@/schemas/similarQuestionSchema';
+import { toast } from 'sonner';
+import axios from 'axios';
+import { ApiResponse } from '@/types/ApiResponse';
+import { IProblem } from '@/models/Problem.js';
+import { Skeleton } from "@/components/ui/skeleton"
+import ProblemPageDescription from '@/components/ProblemPageDescription';
 
 export default function page() {
-  const { theme } = useTheme();
   const [mounted, setMounted] = useState<boolean>(false);
+  const pathname = useParams();
+  const { problemId } = pathname;
 
-  let value = "**Hello world!!!**";
+  const [problemInfo, setProblemInfo] = useState<IProblem | null>(null);
+
+  // 68e414989b5acf879c409226
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    const fetchProblemDetails = async () => {
+      if(!mounted) return null;
+
+      try {
+        const parsedData = mongodbObjectId.safeParse(problemId);
+
+        if (!parsedData.success) {
+          console.log("Invalid Problem Id: ", problemId);
+          toast.error("Invalid Problem Id");
+          return;
+        }
+
+        const res = await axios.get<ApiResponse>(`/api/problem/get-problem?problemId=${problemId}`);
+
+        setProblemInfo(res.data.problem || null);
+
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          toast.error(error.response.data.message);
+          console.log("Problem fetching route error: ", error.response.data.message)
+        } else {
+          toast.error("Error while fetching error");
+          console.log("Error while fetching error: ", error);
+        }
+      }
+    }
+
+    fetchProblemDetails();
+  }, [mounted]);
 
   if (!mounted) {
     return null;
@@ -35,22 +72,17 @@ export default function page() {
       <ResizablePanelGroup direction="horizontal" className="w-full gap-1">
         <ResizablePanel defaultSize={50} className='rounded-md bg-[var(--sidebar-accent)] border'>
           <ProblemPageNavigation />
-          
-          <ScrollArea className='relative w-full h-[calc(100vh-3.5rem-3rem)]'>
-            <div style={{ background: "var(--card)" }} className="w-full h-full flex flex-col p-4 pb-12">
-              <h1 className="text-2xl font-bold">1. Two Sum</h1>
-              <div className="w-full flex gap-2 mt-10">
-                <div className="text-sm px-2.5 py-1 rounded-full bg-[var(--sidebar-accent)] text-yellow-400">Medium</div>
-                <div className="flex gap-1 items-center text-sm px-2.5 py-1 rounded-full bg-[var(--sidebar-accent)]"><Tag className='resize-custom w-4' /> Topics</div>
-                <div className="flex gap-1 items-center text-sm px-2.5 py-1 rounded-full bg-[var(--sidebar-accent)] text-orange-400"><Lock className='resize-custom w-4' /> Companies</div>
-              </div>
-              <div className="text w-full mt-4 ">
-                <MDEditor.Markdown source={twoSum.content} className="markdown-body w-full" style={{ background: "var(--card)" }} />
-              </div>
 
-              <ProblemPageCollapseButton />
-              <p className={`${theme === "dark" ? 'text-neutral-400' : ''} text-xs font-semibold mt-8`}>Copyright © {new Date().getFullYear()} LeetCode-Clone (Next JS Project Created by Avijit). All rights reserved.</p>
-            </div>
+          <ScrollArea className='relative w-full h-[calc(100vh-3.5rem-3rem)]'>
+            {!problemInfo && <div style={{ background: "var(--card)" }} className='absolute left-0 top-0 w-full h-full z-[90] p-4'>
+              <Skeleton className="h-8 w-36 rounded-md" />
+              <Skeleton className="h-8 w-[18rem] rounded-md mt-10" />
+              <Skeleton className="h-48 w-full rounded-md mt-4" />
+              <Skeleton className="h-52 w-full rounded-md mt-4" />
+              </div>
+            }
+
+            {problemInfo && <ProblemPageDescription problemInfo={problemInfo} /> }
             <ProblemSideFooter />
           </ScrollArea>
 

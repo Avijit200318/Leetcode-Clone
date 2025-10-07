@@ -17,7 +17,7 @@ export default function ProblemSideFooter() {
   }
 
   return (
-    <div className='absolute bottom-0 left-0 w-full h-8 bg-[var(--sidebar-accent)] flex items-center px-4 gap-4'>
+    <div className='absolute bottom-0 left-0 w-full h-8 bg-[var(--sidebar-accent)] flex items-center px-4 gap-4 z-[90]'>
       <div className="flex gap-2 items-center px-3 rounded-sm" style={{ background: "var(--card)" }}>
         <div className="flex gap-1 items-center border-r-2">
           <ThumbsUp className='resize-custom w-4' />

@@ -1,9 +1,10 @@
 "use client";
+import { IProblem } from '@/models/Problem';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@radix-ui/react-collapsible'
 import { ChevronRight, Lock, Logs, Tag } from 'lucide-react'
 import React, { useState } from 'react'
 
-export default function ProblemPageCollapseButton() {
+export default function ProblemPageCollapseButton({problemInfo}: {problemInfo: IProblem}) {
     const [openTages, setOpenTags] = useState<boolean>(false);
       const [openCompanies, setOpenCompanies] = useState<boolean>(false);
       const [openSimilarQeustions, setOpenSimilarQuestions] = useState<boolean>(false);
@@ -18,23 +19,25 @@ export default function ProblemPageCollapseButton() {
                     </div>
                     <ChevronRight className={`${openTages ? 'rotate-90' : ''} transition-all duration-400`} />
                 </CollapsibleTrigger>
-                <CollapsibleContent className='flex gap-4 items-center mt-4'>
-                    <div className="py-0.5 px-3 bg-[var(--sidebar-accent)] rounded-full text-sm">Array</div>
-                    <div className="py-0.5 px-3 bg-[var(--sidebar-accent)] rounded-full text-sm">Hash Table</div>
+                <CollapsibleContent className='flex gap-2 items-center mt-4'>
+                    {problemInfo.topics && problemInfo.topics.split(", ").map((ele, index) => 
+                        <div key={index} className="py-0.5 px-3 bg-[var(--sidebar-accent)] rounded-full text-sm">{ele}</div>
+                    )}
                 </CollapsibleContent>
             </Collapsible>
 
             <Collapsible open={openCompanies} onOpenChange={setOpenCompanies} className='w-full px-2 py-3 border-b-2  cursor-pointer'>
                 <CollapsibleTrigger className='flex items-center justify-between w-full h-full cursor-pointer'>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 text-orange-400">
                         <Lock className='resize-custom w-4' />
                         <h3>Companies</h3>
                     </div>
-                    <ChevronRight className={`${openCompanies ? 'rotate-90' : ''} transition-all duration-400`} />
+                    <ChevronRight className={`${openCompanies ? 'rotate-90' : ''} transition-all duration-400 text-orange-400`} />
                 </CollapsibleTrigger>
-                <CollapsibleContent className='flex gap-4 items-center mt-4'>
-                    <div className="py-0.5 px-3 bg-[var(--sidebar-accent)] rounded-full text-sm">Google</div>
-                    <div className="py-0.5 px-3 bg-[var(--sidebar-accent)] rounded-full text-sm">Amazon</div>
+                <CollapsibleContent className='flex gap-2 items-center mt-4'>
+                    {problemInfo.companies && problemInfo.companies?.split(", ").map((ele, index) =>
+                        <div key={index} className="py-0.5 px-3 bg-[var(--sidebar-accent)] rounded-full text-sm text-orange-400">{ele}</div>
+                    )}
                 </CollapsibleContent>
             </Collapsible>
 

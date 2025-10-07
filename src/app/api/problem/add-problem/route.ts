@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
         }
 
         const newProblem = await problemModel.create({
-            title: problemIndex + " " + title,
+            title: problemIndex + ". " + title,
             level,
             description,
             examples,

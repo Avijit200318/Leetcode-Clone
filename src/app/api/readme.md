@@ -348,3 +348,73 @@ The response will be a JSON object with the following fields:
   ]
 }
 ```
+## Endpoint: `/api/code/run-code`
+
+### Description
+This endpoint allows users to **execute code against multiple test cases** using the Judge0 API. It performs the following actions:
+
+- Validates the input request body using the `codeRunValidation` schema.
+- Constructs batched submissions for each test case containing:
+  - The source code (`sourceCode`)
+  - The programming language ID (`languageId`)
+  - The input (`stdin`) and expected output (`expected_output`)
+- Sends the batch of submissions to the Judge0 API.
+- Polls the API until all submissions are processed (status ID > 2).
+- Returns the execution results including output, status, and runtime information.
+
+### Method
+`POST`
+
+### Request Body
+
+Send a JSON object with the following fields:
+
+- `sourceCode`: The source code to execute (required)  
+- `languageId`: The programming language ID as required by Judge0 (required)  
+- `testCases`: An array of objects, each containing:
+  - `input`: The input for the test case (required)  
+  - `output`: The expected output for the test case (required)  
+
+#### Example Request
+```json
+{
+  "sourceCode": "...function sum(a, b) { return a + b; }...",
+  "languageId": 63,
+  "testCases": [
+    { "input": "2 3", "output": "5" },
+    { "input": "10 20", "output": "30" }
+  ]
+}
+```
+### Example Response
+
+The response will be a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful (`true`) or not (`false`).  
+- `message` (string): Provides additional information about the result. For example, success confirmation or error description.  
+- `results` (array): List of objects for each test case, containing:
+  - `stdin` (string): The input used for the test case.  
+  - `stdout` (string): The output produced by the code execution.  
+  - `expected_output` (string): The expected output for the test case.  
+  - `status` (object): Execution status containing properties such as `id` and `description`.  
+  - `time` (string): Execution time in seconds.  
+  - `memory` (number): Memory usage in bytes.  
+
+#### Example Success Response
+```json
+{
+  "success": true,
+  "message": "Code executed successfully",
+  "results": [
+    {
+      "stdin": "2 3",
+      "stdout": "5",
+      "expected_output": "5",
+      "status": { "id": 3, "description": "Accepted" },
+      "time": "0.01",
+      "memory": 2560
+    },
+    ...
+  ]
+}
+```

@@ -11,6 +11,7 @@ import {
 
 export default function ProblemPageCodeEditor({theme}: {theme: string | undefined}) {
     const [selectedLanguage, setSelectedLanguage] = useState<string>("C++");
+    const [yourCode, setYourCode] = useState<string>("");
 
     const coddingLanguages = {
         "C": {

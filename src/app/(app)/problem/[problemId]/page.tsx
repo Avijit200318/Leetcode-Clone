@@ -19,11 +19,14 @@ import { IProblem } from '@/models/Problem.js';
 import { Skeleton } from "@/components/ui/skeleton"
 import ProblemPageDescription from '@/components/ProblemPageDescription';
 
+import ProblemPageCodeEditor from '@/components/ProblemPageCodeEditor';
+import { useTheme } from 'next-themes';
+
 export default function page() {
   const [mounted, setMounted] = useState<boolean>(false);
   const pathname = useParams();
   const { problemId } = pathname;
-
+  const {theme} = useTheme()
   const [problemInfo, setProblemInfo] = useState<IProblem | null>(null);
 
   // 68e414989b5acf879c409226
@@ -34,7 +37,7 @@ export default function page() {
 
   useEffect(() => {
     const fetchProblemDetails = async () => {
-      if(!mounted) return null;
+      if (!mounted) return null;
 
       try {
         const parsedData = mongodbObjectId.safeParse(problemId);
@@ -79,19 +82,17 @@ export default function page() {
               <Skeleton className="h-8 w-[18rem] rounded-md mt-10" />
               <Skeleton className="h-48 w-full rounded-md mt-4" />
               <Skeleton className="h-52 w-full rounded-md mt-4" />
-              </div>
+            </div>
             }
 
-            {problemInfo && <ProblemPageDescription problemInfo={problemInfo} /> }
+            {problemInfo && <ProblemPageDescription problemInfo={problemInfo} />}
             <ProblemSideFooter />
           </ScrollArea>
 
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel defaultSize={50} className='rounded-md'>
-          <div className="w-full h-full flex items-center bg-blue-300 justify-center p-6">
-            <span className="font-semibold">two</span>
-          </div>
+          <ProblemPageCodeEditor theme={theme} />
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

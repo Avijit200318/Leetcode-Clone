@@ -130,3 +130,15 @@
   /* This hides the icon completely for all headers */
   display: none !important; 
 }
+
+/* editor scroll bar styls */
+.monaco-scrollable-element > .scrollbar > .slider {
+  background-color: #999;        /* bg-border, change to match your theme */
+  border-radius: 9999px;         /* fully rounded like rounded-full */
+  flex: 1;                       /* fills the track */
+  transition: background-color 0.2s; /* transition-colors */
+}
+
+.monaco-scrollable-element > .scrollbar > .slider:hover {
+  background-color: #ccc;        /* lighter on hover */
+}

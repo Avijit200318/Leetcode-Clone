@@ -42,11 +42,11 @@ export async function POST(req: NextRequest) {
                 { headers: judge0Headers }
             );
         } catch (err: any) {
-            console.error("Failed to create batch submission:", err.response?.data || err.message);
+            console.error("Failed to create batch submission:", err.response?.data.message);
 
             return NextResponse.json({
                 success: false,
-                message: err.response?.data || err.message,
+                message: err.response?.data.message,
             }, { status: 400 });
         }
 

@@ -33,7 +33,7 @@ export default function Header() {
   }
 
   return (
-    <header className='w-full h-12 border-b-2 flex items-center justify-between px-8'>
+    <header className='w-full h-12 border-b-2 flex items-center justify-between px-8 relative z-30'>
         {(theme === "dark") ? <img src="/navLogo dark.png" alt="" className='h-6' /> : <img src="/navLogo light.png" alt="" className='h-6' />}
         {pathname.startsWith("/problem/")? <NavRunButtonsContainer theme={theme} session={session} /> : <NavLinks theme={theme} session={session} />}
       <div className="flex items-center gap-4">

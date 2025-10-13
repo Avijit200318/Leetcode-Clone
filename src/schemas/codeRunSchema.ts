@@ -3,7 +3,7 @@ import {z} from "zod"
 export const codeRunValidation = z.object({
     sourceCode: z.string().min(20, {message: "The Source code must be atleast 20 charecters"}),
     languageId: z.number().refine(
-      (id) => [50, 54, 62, 63, 71].includes(id),
+      (id) => [50, 54, 62, 93, 71].includes(id),
       { message: "Invalid language ID. Allowed: C, C++, Java, Python, JavaScript this languages" }
     ),
     testCases: z.array(

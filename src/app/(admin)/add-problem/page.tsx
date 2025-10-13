@@ -25,11 +25,6 @@ import { useRouter } from 'next/navigation';
 
 
 export default function page() {
-  // const [description, setDescription] = useState<string>("\nGiven an array of integers `nums` and an integer `target`, return the indices of the two numbers such that they add up to `target`.\n\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\n\nYou can return the answer in any order.\n\n<br>\n\n");
-
-  // const [example, setExample] = useState<string>("#### Example 1\n- **Input:**\n```javascript\nnums = [2, 7, 11, 15]\ntarget = 9\n```\n- **Output:**\n```javascript\n[0, 1]\n```\n- **Explanation:**\n```javascript\nBecause nums[0] + nums[1] == 9, we return [0, 1].\n```\n\n<br>\n\n#### Example 2\n- **Input:**\n```javascript\nnums = [3, 2, 4]\ntarget = 6\n```\n- **Output:**\n```javascript\n[1, 2]\n```\n- **Explanation:**\n```javascript\nBecause nums[1] + nums[2] == 6, we return [1, 2].\n```\n\n<br>\n\n#### Example 3\n- **Input:**\n```javascript\nnums = [3, 3]\ntarget = 6\n```\n- **Output:**\n```javascript\n[0, 1]\n```\n- **Explanation:**\n```javascript\nBecause nums[0] + nums[1] == 6, we return [0, 1].\n```\n\n<br>\n\n")
-
-  // const [constraint, setConstraint] = useState<string>("#### Constraints\n\n- `2 <= nums.length <= 10^4`\n- `-10^9 <= nums[i] <= 10^9`\n- `-10^9 <= target <= 10^9`\n\n- Only one valid answer exists.\n\n<br>\n\n#### Follow-up\n Can you come up with an algorithm that is less than **O(n²)** time complexity?")
 
   const [mounted, setMounted] = useState(false);
   const { theme, systemTheme, setTheme } = useTheme();
@@ -43,7 +38,7 @@ export default function page() {
     defaultValues: {
       title: "",
       level: "",
-      description: "\nGiven an array of integers `nums` and an integer `target`, return the indices of the two numbers such that they add up to `target`.\n\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\n\n### Input format\n\n- The program takes two lines of input\n\n- The first line contains all the elements of the array, separated by commas.\n\n-  The second line contains the target value.\n\n```javascrip\n2,7,11,15\n9\n```\n<br>\n\nYou can return the answer in any order.",
+      description: "\nGiven an array of integers `nums` and an integer `target`, return the indices of the two numbers such that they add up to `target`.\n\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\n\n### Input format\n\n- The program takes two lines of input\n\n- The first line contains all the elements of the array, separated by commas.\n\n-  The second line contains the target value.\n\n```javascrip\n2,7,11,15\n9\n```\n<br>\n\nYou can return the answer in any order.\n\n",
       examples: "#### Example 1\n- **Input:**\n```javascript\nnums = [2, 7, 11, 15]\ntarget = 9\n```\n- **Output:**\n```javascript\n[0, 1]\n```\n- **Explanation:**\n```javascript\nBecause nums[0] + nums[1] == 9, we return [0, 1].\n```\n\n<br>\n\n#### Example 2\n- **Input:**\n```javascript\nnums = [3, 2, 4]\ntarget = 6\n```\n- **Output:**\n```javascript\n[1, 2]\n```\n- **Explanation:**\n```javascript\nBecause nums[1] + nums[2] == 6, we return [1, 2].\n```\n\n<br>\n\n#### Example 3\n- **Input:**\n```javascript\nnums = [3, 3]\ntarget = 6\n```\n- **Output:**\n```javascript\n[0, 1]\n```\n- **Explanation:**\n```javascript\nBecause nums[0] + nums[1] == 6, we return [0, 1].\n```\n\n<br>\n\n",
       constraints: "#### Constraints\n\n- `2 <= nums.length <= 10^4`\n- `-10^9 <= nums[i] <= 10^9`\n- `-10^9 <= target <= 10^9`\n\n- Only one valid answer exists.\n\n<br>\n\n#### Follow-up\n Can you come up with an algorithm that is less than **O(n²)** time complexity?",
       testCases: [],
@@ -198,15 +193,17 @@ export default function page() {
                       {fields.map((field, index) => (
                         <div key={field.id} className="flex gap-2 items-start">
                           <FormControl className="flex-1">
-                            <Input
+                            <textarea
                               placeholder="Input"
                               {...form.register(`testCases.${index}.input` as const)}
+                              className="border rounded-md p-2 w-full h-20 resize-none bg-transparent"
                             />
                           </FormControl>
                           <FormControl className="flex-1">
-                            <Input
+                            <textarea
                               placeholder="Output"
                               {...form.register(`testCases.${index}.output` as const)}
+                              className="border rounded-md p-2 w-full h-20 resize-none bg-transparent"
                             />
                           </FormControl>
                           <Button

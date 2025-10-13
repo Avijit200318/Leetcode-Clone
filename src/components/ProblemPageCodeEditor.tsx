@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Editor from '@monaco-editor/react';
 import { Bookmark, Braces, ChevronUp, CodeXml, Maximize, Maximize2, RotateCcw } from 'lucide-react';
 import {
@@ -7,36 +7,60 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { IProblem } from '@/models/Problem';
+import axios from 'axios';
+import { codeRunValidation } from '@/schemas/codeRunSchema';
+import { toast } from 'sonner';
+import { ApiResponse } from '@/types/ApiResponse';
 
 
-export default function ProblemPageCodeEditor({theme}: {theme: string | undefined}) {
-    const [selectedLanguage, setSelectedLanguage] = useState<string>("C++");
-    const [yourCode, setYourCode] = useState<string>("");
+interface problemEditorPropsType{
+    theme: string | undefined,
+    selectedLanguage: string,
+    setSelectedLanguage: React.Dispatch<React.SetStateAction<string>>,
+    setSelectedLanguageCode: React.Dispatch<React.SetStateAction<number>>,
+    sourceCode: string,
+    setSourceCode: React.Dispatch<React.SetStateAction<string>>
+}
+
+export default function ProblemPageCodeEditor({theme, selectedLanguage, setSelectedLanguage, setSelectedLanguageCode, sourceCode,setSourceCode}: problemEditorPropsType) {
+    // const [selectedLanguage, setSelectedLanguage] = useState<string>("C++");
+    // const [sourceCode, setSourceCode] = useState<string>("");
+    // const [isCodeRunning, setIsCodeRunning] = useState<boolean>(false);
+    // const [codeRunError, setCodeRunError] = useState<string | null>(null);
 
     const coddingLanguages = {
         "C": {
             "compilorId": "c",
-            "apiId": ""
+            "apiId": 50
         },
         "C++": {
             "compilorId": "cpp",
-            "apiId": ""
+            "apiId": 54
         },
         "Java": {
             "compilorId": "java",
-            "apiId": ""
+            "apiId": 62
         },
         "Javascript": {
             "compilorId": "javascript",
-            "apiId": ""
+            "apiId": 93
         },
         "Python": {
             "compilorId": "python",
-            "apiId": ""
+            "apiId": 71
         }
     }
 
     type coddingLanguagesType = keyof typeof coddingLanguages;
+
+    useEffect(() => {
+        const changeLanguageCode = () => {
+            setSelectedLanguageCode(coddingLanguages[selectedLanguage as coddingLanguagesType].apiId);
+            setSourceCode("");
+        }
+        changeLanguageCode();
+    }, [selectedLanguage])
 
     return (
         <div className="w-full h-full bg-[var(--sidebar-accent)]">
@@ -55,7 +79,7 @@ export default function ProblemPageCodeEditor({theme}: {theme: string | undefine
                     <DropdownMenu>
                         <DropdownMenuTrigger className='flex items-center gap-2 outline-none transition-all duration-300 hover:bg-[var(--sidebar-accent)] px-1 rounded-sm cursor-pointer'>{selectedLanguage} <ChevronUp className='resize-custom w-4 rotate-180' /></DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuItem onClickCapture={() => setSelectedLanguage("C")}>C</DropdownMenuItem>
+                            <DropdownMenuItem onClickCapture={() => {setSelectedLanguage("C")}}>C</DropdownMenuItem>
                             <DropdownMenuItem onClickCapture={() => setSelectedLanguage("C++")}>C++</DropdownMenuItem>
                             <DropdownMenuItem onClickCapture={() => setSelectedLanguage("Java")}>Java</DropdownMenuItem>
                             <DropdownMenuItem onClickCapture={() => setSelectedLanguage("Javascript")}>Javascript</DropdownMenuItem>
@@ -71,8 +95,9 @@ export default function ProblemPageCodeEditor({theme}: {theme: string | undefine
                 </div>
             </div>
             <Editor
-                defaultLanguage={coddingLanguages[selectedLanguage as coddingLanguagesType].compilorId}
-                defaultValue=""
+                language={coddingLanguages[selectedLanguage as coddingLanguagesType].compilorId}
+                value={sourceCode}
+                onChange={(value) => setSourceCode(value ?? "")}
                 theme='vs-dark'
                 options={{
                     automaticLayout: true,

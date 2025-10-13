@@ -10,27 +10,20 @@ interface NavRunButtonType {
   session: Session | null
 }
 
-export default function NavRunButtonsContainer({theme, session}: NavRunButtonType) {
-    const [isRunLoading, setIsRunLoading] = useState<boolean>(false);
-    const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
+export default function NavRunButtonsContainer({ theme, session }: NavRunButtonType) {
+  const [isRunLoading, setIsRunLoading] = useState<boolean>(false);
+  const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
 
   return (
     <div className="w-[80%] px-4 border-l flex justify-between items-center h-full">
-        <div className="flex items-center gap-2">
-          <Link href="/problems"><ListVideo className={`${theme === "dark"? 'text-neutral-300' : ''} resize-custom w-5`} /></Link>
+      <div className="flex items-center gap-2">
+        <Link href="/problems"><ListVideo className={`${theme === "dark" ? 'text-neutral-300' : ''} resize-custom w-5`} /></Link>
         <Link href="/problems" className=''>Problem List</Link>
-        <Shuffle className={`${theme === "dark"? 'text-neutral-300' : ''} resize-custom w-4 ml-4`} />
-        </div>
-        <div className="flex gap-1">
-          <Button disabled={session?.user? false : true} variant="secondary" className='cursor-pointer'>{isRunLoading? <Loader2 className='resize-custom w-5 animate-spin' /> : <Play />}</Button>
-          <Button disabled={session?.user? false : true} variant="secondary" className='w-30 cursor-pointer text-base flex items-center gap-2 font-semibold'>
-            {isSubmitLoading? <><Loader2 className='resize-custom w-5 animate-spin' />Running</> : <><CloudUpload className='resize-custom w-5' /> Submit</>}
-            </Button>
-          <Button disabled={session?.user? false : true} variant="secondary" className='cursor-pointer'><Sparkles /></Button>
-        </div>
-        <div className="">
-          <Flame className={`${theme === "dark"? 'text-neutral-300' : ''}`} />
-        </div>
+        <Shuffle className={`${theme === "dark" ? 'text-neutral-300' : ''} resize-custom w-4 ml-4`} />
       </div>
+      <div className="">
+        <Flame className={`${theme === "dark" ? 'text-neutral-300' : ''}`} />
+      </div>
+    </div>
   )
 }

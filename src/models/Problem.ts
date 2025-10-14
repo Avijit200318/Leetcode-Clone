@@ -73,11 +73,11 @@ const problemSchema = new Schema<IProblem>({
         type: String
     },
     similarQuestions: [{
-        type: Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "SimilarQuestion"
     }],
     solutions: [{
-        type: Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Solution"
     }]
 }, {timestamps: true});

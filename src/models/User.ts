@@ -16,7 +16,7 @@ export interface IUser extends Document{
     forgetPasswordExpiry: Date | null,
     solvedProblems: number,
     solutions: Types.ObjectId[],
-    submission: Types.ObjectId[],
+    submissions: Types.ObjectId[],
     solvedQuestions: Types.ObjectId[],
     createdAt?: Date,
     updatedAt?: Date,
@@ -80,15 +80,15 @@ const userSchema = new Schema<IUser>({
         default: 0
     },
     solutions: [{
-        type: Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Solution"
     }],
-    submission: [{
-        type: Types.ObjectId,
+    submissions: [{
+        type: Schema.Types.ObjectId,
         ref: "Submission"
     }],
     solvedQuestions: [{
-        type: Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "SolvedQuestion"
     }]
 }, {timestamps: true});

@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
 
         user.forgetPasswordExpiry = new Date(Date.now() + (5 * 60 * 1000));
         user.verifyCode = verifyCode;
-        user.save();
+        await user.save();
 
         const emailResponse = await sendForgetPasswordVerificationEmail(user.email, user.username, verifyCode);
 

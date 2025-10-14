@@ -353,14 +353,11 @@ The response will be a JSON object with the following fields:
 ### Description
 This endpoint allows users to **execute code against multiple test cases** using the Judge0 API. It performs the following actions:
 
-- Validates the input request body using the `codeRunValidation` schema.
-- Constructs batched submissions for each test case containing:
-  - The source code (`sourceCode`)
-  - The programming language ID (`languageId`)
-  - The input (`stdin`) and expected output (`expected_output`)
-- Sends the batch of submissions to the Judge0 API.
-- Polls the API until all submissions are processed (status ID > 2).
-- Returns the execution results including output, status, and runtime information.
+- Validates the input request body using the `codeRunValidation` schema.  
+- Uses the helper function `runJudge0Batch()` to interact with the external Judge0 API.  
+- Sends the provided code and test cases to Judge0 for execution.  
+- Waits for all test cases to finish executing and retrieves the results.  
+- Returns the final execution output for each test case, including status, runtime, and memory usage.  
 
 ### Method
 `POST`
@@ -369,16 +366,16 @@ This endpoint allows users to **execute code against multiple test cases** using
 
 Send a JSON object with the following fields:
 
-- `sourceCode`: The source code to execute (required)  
-- `languageId`: The programming language ID as required by Judge0 (required)  
-- `testCases`: An array of objects, each containing:
-  - `input`: The input for the test case (required)  
-  - `output`: The expected output for the test case (required)  
+- `sourceCode` (string): The source code to execute. *(required)*  
+- `languageId` (number): The programming language ID as required by Judge0. *(required)*  
+- `testCases` (array): A list of test case objects, where each object contains:
+  - `input` (string): The input for the test case. *(required)*  
+  - `output` (string): The expected output for the test case. *(required)*  
 
 #### Example Request
 ```json
 {
-  "sourceCode": "...function sum(a, b) { return a + b; }...",
+  "sourceCode": "function sum(a, b) { return a + b; } console.log(sum(2, 3));",
   "languageId": 63,
   "testCases": [
     { "input": "2 3", "output": "5" },
@@ -416,5 +413,90 @@ The response will be a JSON object with the following fields:
     },
     ...
   ]
+}
+```
+## Endpoint: `/api/code/run-code`
+
+### Description
+This endpoint allows a user to **submit code for a problem**. It performs the following actions:
+
+- Validates the request body using the `codeSubmissionValidation` and `codeRunValidation` schemas.
+- Runs the submitted code against multiple test cases using the Judge0 API (`runJudge0Batch`).
+- Aggregates execution results to calculate:
+  - Overall status (`Accepted` if all test cases pass, otherwise the first failing status)
+  - Average execution time (seconds)
+  - Average memory usage (converted to MB)
+- Creates a new submission document in the database (`submissionModel`) with the results.
+- Updates the corresponding user:
+  - Adds the submission ID to `user.submissions`
+  - Adds the problem ID to `user.solvedQuestions`
+  - Increments `user.solvedProblems`
+- Returns the newly created submission object on success.
+
+### Method
+`POST`
+
+### Request Body
+
+Send a JSON object with the following fields:
+
+- `userId` (string – MongoDB ObjectId): The ID of the user submitting the code (required)  
+- `problemId` (string – MongoDB ObjectId): The ID of the problem being solved (required)  
+- `language` (string): Programming language name, e.g., `"JavaScript"`, `"Python"` (required)  
+- `sourceCode` (string): The code to be executed (required)  
+- `languageId` (number): The Judge0 language ID corresponding to the programming language (required)  
+- `testCases` (array): An array of objects containing:
+  - `input` (string): Input for the test case (required)  
+  - `output` (string): Expected output for the test case (required)  
+
+#### Example Request
+```json
+{
+  "userId": "650f4c8e2b3c97b12c7df123",
+  "problemId": "6510d8b26b3c97b12c7df456",
+  "language": "JavaScript",
+  "sourceCode": "function sum(a, b) { return a + b; }",
+  "languageId": 63,
+  "testCases": [
+    { "input": "2\n3", "output": "5" },
+    { "input": "10\n20", "output": "30" }
+  ]
+}
+```
+### Example Response
+
+The response will be a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful (`true`) or not (`false`).  
+- `message` (string): Provides additional information about the result. For example, success confirmation or error description.  
+- `submission` (object): The newly created submission document containing:
+  - `userId` (string – MongoDB ObjectId): ID of the user who submitted the code  
+  - `problemId` (string – MongoDB ObjectId): ID of the problem solved  
+  - `language` (string): The programming language used  
+  - `sourceCode` (string): Submitted code  
+  - `status` (string): Overall status (`Accepted` if all test cases passed)  
+  - `time` (number): Average execution time in **seconds**  
+  - `memory` (number): Average memory usage in **MB**  
+  - `_id` (string – MongoDB ObjectId): Submission ID  
+  - `createdAt` (string – ISO date): Submission creation timestamp  
+  - `updatedAt` (string – ISO date): Submission last update timestamp  
+
+#### Example Success Response
+```json
+{
+  "success": true,
+  "message": "Your code submitted successfully",
+  "submission": {
+    "_id": "6523f8c86b3c97b12c7df789",
+    "userId": "650f4c8e2b3c97b12c7df123",
+    "problemId": "6510d8b26b3c97b12c7df456",
+    "language": "JavaScript",
+    "sourceCode": "function sum(a, b) { return a + b; }",
+    "status": "Accepted",
+    "time": 0.01,
+    "memory": 0.00244,
+    "createdAt": "2025-10-14T18:30:00.000Z",
+    "updatedAt": "2025-10-14T18:30:00.000Z"
+  }
 }
 ```

@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
                 verifyCode,
                 verifyCodeExpiry: expiryDate,
                 solutions: [],
-                submission: [],
+                submissions: [],
                 solvedQuestions: []
             });
 

@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
         if(isCodeValid && isForgetPasswordNotExpired){
             user.password = hashedPassword;
             user.forgetPasswordExpiry = null;
-            user.save();
+            await user.save();
 
             return NextResponse.json({
                 success: true,

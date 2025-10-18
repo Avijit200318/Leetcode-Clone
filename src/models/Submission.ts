@@ -7,7 +7,7 @@ export interface ISubmission extends Document {
     time: number,
     memory: number,
     sourceCode: string,
-    problemId: Types.ObjectId
+    problemId: Types.ObjectId,
 }
 
 const submissionSchema = new Schema<ISubmission>({

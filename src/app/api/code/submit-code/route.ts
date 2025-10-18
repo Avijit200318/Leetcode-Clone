@@ -9,14 +9,14 @@ import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-    // const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-    // if (!token) {
-    //     return NextResponse.json({
-    //         success: false,
-    //         message: "Unauthorized"
-    //     }, { status: 400 });
-    // }
+    if (!token) {
+        return NextResponse.json({
+            success: false,
+            message: "Unauthorized"
+        }, { status: 400 });
+    }
 
     await connectToDb();
 
@@ -112,7 +112,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({
             success: true,
             message: "Your code submitted successfully",
-            submission: newSubmission
+            submissionOutput: newSubmission
         }, { status: 201 });
 
     } catch (error) {

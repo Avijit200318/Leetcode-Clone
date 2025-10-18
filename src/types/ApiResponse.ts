@@ -16,6 +16,18 @@ export interface Judge0SubmissionResult {
     memory?: number | null;
 }
 
+export interface codeSubmissionResultType {
+    userId: string | mongoose.Types.ObjectId,
+    status: string,
+    language: string,
+    time: number,
+    memory: number,
+    sourceCode: string,
+    problemId: string | mongoose.Types.ObjectId,
+    createdAt?: Date,
+    udpatedAt?: Date
+}
+
 export interface ApiResponse {
     success: boolean,
     message: string,
@@ -24,8 +36,9 @@ export interface ApiResponse {
     solutions?: Array<mongoose.Types.ObjectId>,
     submission?: Array<mongoose.Types.ObjectId>,
     solvedQuestions?: Array<mongoose.Types.ObjectId>,
+    submissionOutput?: codeSubmissionResultType,
     problemId?: string | mongoose.Types.ObjectId,
     problem?: IProblem,
     allProblems?: IProblem[],
-    results?: Judge0SubmissionResult[]
+    results?: Judge0SubmissionResult[],
 }

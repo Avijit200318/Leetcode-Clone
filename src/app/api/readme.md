@@ -469,7 +469,7 @@ The response will be a JSON object with the following fields:
 
 - `success` (boolean): Indicates whether the request was successful (`true`) or not (`false`).  
 - `message` (string): Provides additional information about the result. For example, success confirmation or error description.  
-- `submission` (object): The newly created submission document containing:
+- `submissionOutput` (object): The newly created submission document containing:
   - `userId` (string – MongoDB ObjectId): ID of the user who submitted the code  
   - `problemId` (string – MongoDB ObjectId): ID of the problem solved  
   - `language` (string): The programming language used  
@@ -486,7 +486,7 @@ The response will be a JSON object with the following fields:
 {
   "success": true,
   "message": "Your code submitted successfully",
-  "submission": {
+  "submissionOutput": {
     "_id": "6523f8c86b3c97b12c7df789",
     "userId": "650f4c8e2b3c97b12c7df123",
     "problemId": "6510d8b26b3c97b12c7df456",

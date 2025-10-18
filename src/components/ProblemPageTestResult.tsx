@@ -1,12 +1,15 @@
 "use client"
-import { Judge0SubmissionResult } from '@/types/ApiResponse'
-import { CircleCheckBig } from 'lucide-react'
+import { codeSubmissionResultType, Judge0SubmissionResult } from '@/types/ApiResponse'
+import { CircleCheckBig, Clock4, Info, Sparkles, SquarePen } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { IProblem } from '@/models/Problem'
 import { Skeleton } from './ui/skeleton'
+import { Session } from 'next-auth'
+import CustomBarChart from './CustomBarChart'
+import { formatDate } from '@/helpers/formatDate'
 
-export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme, problemInfo, selectedLanguage }: { codeOutput: Judge0SubmissionResult[] | null, isCodeRunning: boolean, theme: string | undefined, problemInfo: IProblem, selectedLanguage: string }) {
+export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme, problemInfo, selectedLanguage, session, submissionOutput }: { codeOutput: Judge0SubmissionResult[] | null, isCodeRunning: boolean, theme: string | undefined, problemInfo: IProblem, selectedLanguage: string, session: Session | null, submissionOutput: codeSubmissionResultType | null }) {
     const [viewTestCase, setViewTestCase] = useState<number>(0);
     const [inputValues, setInputValues] = useState<string[]>([]);
     const [outputValues, setOutputValues] = useState<string[]>([]);
@@ -81,6 +84,45 @@ export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme
                         )}
                     </div>
                 </div>
+            }
+
+            {submissionOutput && <div style={{ background: "var(--card)" }} className="absolute w-full top-0 left-0  p-4 pb-10 transition-all duration-200">
+                <div className="w-full flex justify-between items-end">
+                    <div className="">
+                        <div className="flex items-center gap-2 mb-3">
+                            {submissionOutput.status === "Accepted"? 
+                            <h2 className="text-xl font-semibold text-green-500">{submissionOutput.status}</h2>:
+                            <h2 className="text-xl font-semibold text-red-500">{submissionOutput.status}</h2>
+                        }
+                            <p className={`text-sm ${theme === "dark" ? 'text-neutral-400' : ''}`}>3 / 3 testcases passed</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <img src={session?.user.avatar || " "} alt="" className="w-8 h-8 rounded-full bg-blue-200 object-contain" />
+                            <h2 className="text-lg font-semibold">{session?.user.username}</h2>
+                            <p className={`text-sm ${theme === "dark" ? 'text-neutral-400' : ''}`}>Submitted at {formatDate(submissionOutput.createdAt as Date)}</p>
+                        </div>
+                    </div>
+                    <Button className='bg-green-500 text-white font-semibold cursor-pointer hover:bg-green-600 duration-300'><SquarePen className='resize-custom w-4 h-4' /> Solution</Button>
+                </div>
+                <div className="w-1/2 p-4 rounded-md my-6 bg-[var(--sidebar-accent)] flex flex-col gap-2">
+                    <div className="w-full flex items-center justify-between">
+                        <h2 className="flex gap-2 items-center"><Clock4 className="resize-custom w-4 h-4" /> Runtime</h2>
+                        <Info className='resize-custom w-4 h-4' />
+                    </div>
+                    <h2 className="text-xl">{submissionOutput.time * 1000} ms</h2>
+                    <h2 className="flex items-center gap-2 text-blue-500"><Sparkles className='resize-custom w-4 h-4' /> Analyze complexity</h2>
+                </div>
+
+                <div className="w-full h-[20rem] overflow-hidden">
+                    <CustomBarChart />
+                </div>
+                <div className={`flex items-center mt-6 mb-4 ${theme === "dark" ? 'text-neutral-400' : ''}`}>
+                    <h2 className="font-semibold px-2 border-r-2">Code</h2>
+                    <h2 className="font-semibold px-2">{submissionOutput.language}</h2>
+                </div>
+                <div className="w-full min-h-[20rem] border rounded-md">
+                </div>
+            </div>
             }
         </div>
     )

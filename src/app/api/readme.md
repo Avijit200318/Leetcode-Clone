@@ -500,3 +500,70 @@ The response will be a JSON object with the following fields:
   }
 }
 ```
+## Endpoint: `/api/problem/get-submitted-code?problemId=6510d8b26b3c97...`
+
+### Description
+This endpoint allows an **authenticated user** to fetch all submissions they have made for a specific problem. It performs the following actions:
+
+- Requires a valid JWT token for authentication.
+- Extracts the `problemId` from query parameters.
+- Checks if the provided `problemId` exists in the database.
+- Retrieves all submissions made by the authenticated user for the specified problem using a MongoDB aggregation:
+  - Matches the authenticated user by `_id`.
+  - Looks up the `submissions` collection for submissions corresponding to the `problemId`.
+  - Sorts submissions by creation date in descending order.
+  - Returns only the `submissionDetails` array.
+- Returns a JSON response containing all submission details.
+
+### Method
+`GET`
+
+### Query Parameters
+
+- `problemId` (string – MongoDB ObjectId): The ID of the problem for which submissions should be fetched (required).
+
+#### Example Request
+```json
+GET /api/problem/submissions?problemId=6510d8b26b3c97b12c7df456
+```
+
+### Example Response
+
+The response will be a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful (`true`) or not (`false`).  
+- `message` (string): Provides additional information about the result.  
+- `solutions` (array): List of submission objects for the problem, each containing:
+  - `_id` (string – MongoDB ObjectId): Submission ID  
+  - `problemId` (string – MongoDB ObjectId): Associated problem ID  
+  - `userId` (string – MongoDB ObjectId): ID of the user who submitted the code  
+  - `language` (string): Programming language used  
+  - `sourceCode` (string): Submitted code  
+  - `status` (string): Submission status (`Accepted`, `Wrong Answer`, etc.)  
+  - `time` (number): Average execution time in **seconds**  
+  - `memory` (number): Average memory usage in **MB**  
+  - `createdAt` (string – ISO date): Submission creation timestamp  
+  - `updatedAt` (string – ISO date): Submission last update timestamp  
+
+#### Example Success Response
+```json
+{
+  "success": true,
+  "message": "Submission fetched successfully",
+  "solutions": [
+    {
+      "_id": "6523f...",
+      "problemId": "6510d8b2...",
+      "userId": "650f4c...",
+      "language": "JavaScript",
+      "sourceCode": "...",
+      "status": "Accepted",
+      "time": 0.01,
+      "memory": 0.00244,
+      "createdAt": "2025-10-14T18:30:00.000Z",
+      "updatedAt": "2025-10-14T18:30:00.000Z"
+    },
+    ...
+  ]
+}
+```

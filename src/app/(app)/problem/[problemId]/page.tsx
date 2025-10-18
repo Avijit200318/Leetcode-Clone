@@ -188,8 +188,8 @@ export default function page() {
 
             {(problemInfo && currentTab === "description") && <ProblemPageDescription problemInfo={problemInfo} />}
             {(problemInfo && currentTab === "solutions") && <ProblemPageSoluction />}
-            {(problemInfo && currentTab === "submissions") && <ProblemPageSubmission />}
-            {(problemInfo && currentTab === "testResult") && <ProblemPageTestResult codeOutput={codeOutput} isCodeRunning={isCodeRunning} theme={theme} problemInfo={problemInfo} selectedLanguage={selectedLanguage} session={session} submissionOutput={submissionOutput} />}
+            {(problemInfo && currentTab === "submissions") && <ProblemPageSubmission theme={theme} problemInfo={problemInfo} setCurrentTab={setCurrentTab} setSubmissionOutput={setSubmissionOutput} />}
+            {(problemInfo && currentTab === "testResult") && <ProblemPageTestResult codeOutput={codeOutput} isCodeRunning={isCodeRunning} theme={theme} problemInfo={problemInfo} session={session} submissionOutput={submissionOutput} />}
             <ProblemSideFooter />
           </ScrollArea>
 

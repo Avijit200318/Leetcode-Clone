@@ -1,9 +1,82 @@
-import React from 'react'
+"use client";
+import { formatDate } from '@/helpers/formatDate';
+import { IProblem } from '@/models/Problem';
+import { ApiResponse, codeSubmissionResultType } from '@/types/ApiResponse';
+import axios from 'axios';
+import { ChevronDown, Clock4, Cpu } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { toast } from 'sonner';
+import { Skeleton } from './ui/skeleton';
 
-export default function ProblemPageSubmission() {
+export default function ProblemPageSubmission({ theme, problemInfo, setCurrentTab, setSubmissionOutput }: { theme: string | undefined, problemInfo: IProblem, setCurrentTab: React.Dispatch<React.SetStateAction<string>>, setSubmissionOutput: React.Dispatch<React.SetStateAction<codeSubmissionResultType | null>> }) {
+  const [submission, setSubmission] = useState<codeSubmissionResultType[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchSubmission = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get<ApiResponse>(`/api/problem/get-submitted-code?problemId=${problemInfo._id}`);
+
+        console.log(res.data.solutions);
+        setSubmission(res.data.solutions as codeSubmissionResultType[]);
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          toast.error(error.response.data.message);
+          console.log("Problem fetching submissions: ", error.response.data.message);
+        } else {
+          toast.error("Error while fetching submissions");
+          console.log("Error while fetching submissions: ", error);
+        }
+      } finally{
+        setLoading(false);
+      }
+    }
+    fetchSubmission();
+  }, []);
+
+  const handleClick = (ele: codeSubmissionResultType) => {
+    if(!submission) return;
+
+    setCurrentTab("testResult");
+    setSubmissionOutput(ele);
+  }
+
   return (
     <div style={{ background: "var(--card)" }} className='w-full min-h-[calc(100vh-6.5rem)] flex flex-col p-4 pb-12'>
-      problem page submission
+      <div className="w-full flex items-center justify-between py-1 border-b border-t px-2">
+        <p className={`${theme === "dark" ? 'text-neutral-300' : ''}`}>No</p>
+        <h1 className={`text-lg ${theme === "dark" ? 'text-neutral-300' : ''}`}>Status</h1>
+        <div className="flex items-center gap-16 w-[32rem]">
+          <h3 className={`flex items-center gap-1 ${theme === "dark" ? 'text-neutral-300' : ''}`}>Language <ChevronDown className='resize-custom w-4' /></h3>
+          <h3 className={`flex items-center gap-1 ${theme === "dark" ? 'text-neutral-300' : ''}`}>Runtime <ChevronDown className='resize-custom w-4' /></h3>
+          <h3 className={`flex items-center gap-1 ${theme === "dark" ? 'text-neutral-300' : ''}`}>Memory <ChevronDown className='resize-custom w-4' /></h3>
+        </div>
+      </div>
+
+      {loading && <div className='absolute top-14 left-0 w-full h-14 opacity-50 px-4 flex items-center gap-4'>
+        <Skeleton className="w-[12rem] h-11 rounded-sm" />
+        <div className="flex items-center gap-10 px-4">
+        <Skeleton className="w-16 h-11 rounded-sm" />
+        <Skeleton className="w-24 h-11 rounded-sm" />
+        <Skeleton className="w-32 h-11 rounded-sm" />
+        </div>
+        </div>}
+
+      {submission && !loading && submission.map((ele, index) =>
+        <div key={index} onClick={()=> handleClick(ele)} className="w-full flex items-center justify-between py-1 border-b border-t cursor-pointer px-2">
+          <p className=''>{index + 1}</p>
+          <div className="">
+            <h1 className="text-lg font-semibold text-green-500">{ele.status}</h1>
+            <h2 className={`text-sm ${theme === "dark" ? 'text-neutral-300' : ''}`}>{formatDate(ele.createdAt as Date)}</h2>
+          </div>
+          <div className="flex items-center gap-16 w-[30rem]">
+            <h3 className="px-2 py-0.5 rounded-full bg-[var(--sidebar-accent)]">{ele.language}</h3>
+            <h3 className={`flex items-center gap-1 ${theme === "dark" ? 'text-neutral-300' : ''}`}><Clock4 className='resize-custom w-4' /> {(ele.time * 100).toFixed(2)}ms</h3>
+            <h3 className={`flex items-center gap-1 ${theme === "dark" ? 'text-neutral-300' : ''} ml-6`}><Cpu className='resize-custom w-4' /> {(ele.memory * 1024).toFixed(2)}Mb</h3>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

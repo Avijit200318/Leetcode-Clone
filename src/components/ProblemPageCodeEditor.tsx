@@ -24,10 +24,6 @@ interface problemEditorPropsType{
 }
 
 export default function ProblemPageCodeEditor({theme, selectedLanguage, setSelectedLanguage, setSelectedLanguageCode, sourceCode,setSourceCode}: problemEditorPropsType) {
-    // const [selectedLanguage, setSelectedLanguage] = useState<string>("C++");
-    // const [sourceCode, setSourceCode] = useState<string>("");
-    // const [isCodeRunning, setIsCodeRunning] = useState<boolean>(false);
-    // const [codeRunError, setCodeRunError] = useState<string | null>(null);
 
     const coddingLanguages = {
         "C": {

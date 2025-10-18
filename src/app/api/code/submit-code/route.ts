@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
             status: currentStatus,
             language,
             time: sumOfTime / apiResponse.result.length,
-            memory: (sumOfMemory / apiResponse.result.length) / (1024 * 1024),
+            memory: (sumOfMemory / apiResponse.result.length) / 1024,
             sourceCode,
             problemId
         });

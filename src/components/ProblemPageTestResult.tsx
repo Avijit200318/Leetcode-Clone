@@ -9,7 +9,7 @@ import { Session } from 'next-auth'
 import CustomBarChart from './CustomBarChart'
 import { formatDate } from '@/helpers/formatDate'
 
-export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme, problemInfo, selectedLanguage, session, submissionOutput }: { codeOutput: Judge0SubmissionResult[] | null, isCodeRunning: boolean, theme: string | undefined, problemInfo: IProblem, selectedLanguage: string, session: Session | null, submissionOutput: codeSubmissionResultType | null }) {
+export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme, problemInfo, session, submissionOutput }: { codeOutput: Judge0SubmissionResult[] | null, isCodeRunning: boolean, theme: string | undefined, problemInfo: IProblem, session: Session | null, submissionOutput: codeSubmissionResultType | null }) {
     const [viewTestCase, setViewTestCase] = useState<number>(0);
     const [inputValues, setInputValues] = useState<string[]>([]);
     const [outputValues, setOutputValues] = useState<string[]>([]);
@@ -109,7 +109,7 @@ export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme
                         <h2 className="flex gap-2 items-center"><Clock4 className="resize-custom w-4 h-4" /> Runtime</h2>
                         <Info className='resize-custom w-4 h-4' />
                     </div>
-                    <h2 className="text-xl">{submissionOutput.time * 1000} ms</h2>
+                    <h2 className="text-xl">{submissionOutput.time * 100} ms</h2>
                     <h2 className="flex items-center gap-2 text-blue-500"><Sparkles className='resize-custom w-4 h-4' /> Analyze complexity</h2>
                 </div>
 

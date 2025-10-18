@@ -33,7 +33,7 @@ export interface ApiResponse {
     message: string,
     user?: IUser,
     userId?: string | mongoose.Types.ObjectId,
-    solutions?: Array<mongoose.Types.ObjectId>,
+    solutions?: Array<mongoose.Types.ObjectId> | codeSubmissionResultType[],
     submission?: Array<mongoose.Types.ObjectId>,
     solvedQuestions?: Array<mongoose.Types.ObjectId>,
     submissionOutput?: codeSubmissionResultType,

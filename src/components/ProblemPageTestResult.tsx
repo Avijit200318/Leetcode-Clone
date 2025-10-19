@@ -1,6 +1,6 @@
 "use client"
 import { codeSubmissionResultType, Judge0SubmissionResult } from '@/types/ApiResponse'
-import { CircleCheckBig, Clock4, Info, Sparkles, SquarePen } from 'lucide-react'
+import { CircleCheckBig, Clock4, Info, Sparkles, SquarePen, X } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { IProblem } from '@/models/Problem'
@@ -8,8 +8,18 @@ import { Skeleton } from './ui/skeleton'
 import { Session } from 'next-auth'
 import CustomBarChart from './CustomBarChart'
 import { formatDate } from '@/helpers/formatDate'
+import MDEditor from '@uiw/react-md-editor';
 
-export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme, problemInfo, session, submissionOutput }: { codeOutput: Judge0SubmissionResult[] | null, isCodeRunning: boolean, theme: string | undefined, problemInfo: IProblem, session: Session | null, submissionOutput: codeSubmissionResultType | null }) {
+interface ProblemPageTestResultType {
+    codeOutput: Judge0SubmissionResult[] | null,
+    isCodeRunning: boolean, theme: string | undefined,
+    problemInfo: IProblem,
+    session: Session | null,
+    submissionOutput: codeSubmissionResultType | null,
+    setSubmissionOutput: React.Dispatch<React.SetStateAction<codeSubmissionResultType | null>> 
+}
+
+export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme, problemInfo, session, submissionOutput, setSubmissionOutput }: ProblemPageTestResultType) {
     const [viewTestCase, setViewTestCase] = useState<number>(0);
     const [inputValues, setInputValues] = useState<string[]>([]);
     const [outputValues, setOutputValues] = useState<string[]>([]);
@@ -38,7 +48,11 @@ export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme
             }
         }
         checkIsAllTestCasePass();
-    }, [codeOutput])
+    }, [codeOutput]);
+
+    const handleSubmissionClose = () => {
+        setSubmissionOutput(null);
+    }
 
     return (
         <div style={{ background: "var(--card)" }} className='w-full min-h-[calc(100vh-6.5rem)] flex flex-col p-4 pb-12 relative'>
@@ -90,11 +104,13 @@ export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme
                 <div className="w-full flex justify-between items-end">
                     <div className="">
                         <div className="flex items-center gap-2 mb-3">
-                            {submissionOutput.status === "Accepted"? 
-                            <h2 className="text-xl font-semibold text-green-500">{submissionOutput.status}</h2>:
-                            <h2 className="text-xl font-semibold text-red-500">{submissionOutput.status}</h2>
-                        }
-                            <p className={`text-sm ${theme === "dark" ? 'text-neutral-400' : ''}`}>3 / 3 testcases passed</p>
+                            {submissionOutput.status === "Accepted" ?
+                                <h2 className="text-xl font-semibold text-green-500">{submissionOutput.status}</h2> :
+                                <h2 className="text-xl font-semibold text-red-500">{submissionOutput.status}</h2>
+                            }
+                            {submissionOutput.status === "Accepted" ?
+                                <p className={`text-sm ${theme === "dark" ? 'text-neutral-400' : ''}`}>3 / 3 testcases passed</p> : <p className={`text-sm ${theme === "dark" ? 'text-neutral-400' : ''}`}>Some  testcases failed</p>
+                            }
                         </div>
                         <div className="flex items-center gap-2">
                             <img src={session?.user.avatar || " "} alt="" className="w-8 h-8 rounded-full bg-blue-200 object-contain" />
@@ -102,25 +118,32 @@ export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme
                             <p className={`text-sm ${theme === "dark" ? 'text-neutral-400' : ''}`}>Submitted at {formatDate(submissionOutput.createdAt as Date)}</p>
                         </div>
                     </div>
-                    <Button className='bg-green-500 text-white font-semibold cursor-pointer hover:bg-green-600 duration-300'><SquarePen className='resize-custom w-4 h-4' /> Solution</Button>
+                    {submissionOutput.status === "Accepted" ? <Button className='bg-green-500 text-white font-semibold cursor-pointer hover:bg-green-600 duration-300'><SquarePen className='resize-custom w-4 h-4' /> Solution</Button>:
+                    <Button onClick={handleSubmissionClose} className='bg-red-500 text-white font-semibold  cursor-pointer hover:bg-red-600 duration-300'><X className='resize-custom w-5 h-5' /> Close</Button>
+                }
                 </div>
                 <div className="w-1/2 p-4 rounded-md my-6 bg-[var(--sidebar-accent)] flex flex-col gap-2">
                     <div className="w-full flex items-center justify-between">
-                        <h2 className="flex gap-2 items-center"><Clock4 className="resize-custom w-4 h-4" /> Runtime</h2>
-                        <Info className='resize-custom w-4 h-4' />
+                        <h2 className={`flex gap-2 items-center ${submissionOutput.status === "Accepted"? '' : 'text-red-500'}`}><Clock4 className="resize-custom w-4 h-4" /> Runtime</h2>
+                        <Info className={`resize-custom w-4 h-4 ${submissionOutput.status === "Accepted"? '' : 'text-red-500'}`} />
                     </div>
-                    <h2 className="text-xl">{submissionOutput.time * 100} ms</h2>
+                    <h2 className={`text-xl ${submissionOutput.status === "Accepted"? '' : 'text-red-500'}`}>{ submissionOutput.status === "Accepted"? `${(submissionOutput.time * 1000).toFixed(2)} ms` : 'N/A'}</h2>
+                    {submissionOutput.status === "Accepted" && 
                     <h2 className="flex items-center gap-2 text-blue-500"><Sparkles className='resize-custom w-4 h-4' /> Analyze complexity</h2>
+                    }
                 </div>
 
-                <div className="w-full h-[20rem] overflow-hidden">
+                {(submissionOutput && submissionOutput.status === "Accepted") && <div className="w-full h-[20rem] overflow-hidden">
                     <CustomBarChart />
-                </div>
+                </div>}
                 <div className={`flex items-center mt-6 mb-4 ${theme === "dark" ? 'text-neutral-400' : ''}`}>
                     <h2 className="font-semibold px-2 border-r-2">Code</h2>
                     <h2 className="font-semibold px-2">{submissionOutput.language}</h2>
                 </div>
-                <div className="w-full min-h-[20rem] border rounded-md">
+                <div className="w-full border rounded-md overflow-hidden mb-8">
+                    <MDEditor.Markdown
+                    source={`\`\`\`\n${submissionOutput.sourceCode}\n\`\`\``}
+                    className="markdown-body w-full" style={{ background: "var(--card)"}}  />
                 </div>
             </div>
             }

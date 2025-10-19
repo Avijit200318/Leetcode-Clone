@@ -174,7 +174,7 @@ export default function page() {
       </div>
 
       <ResizablePanelGroup direction="horizontal" className="w-full gap-1">
-        <ResizablePanel defaultSize={50} className='rounded-md bg-[var(--sidebar-accent)] border'>
+        <ResizablePanel defaultSize={50} minSize={31} className='rounded-md bg-[var(--sidebar-accent)] border'>
           <ProblemPageNavigation currentTab={currentTab} setCurrentTab={setCurrentTab} />
 
           <ScrollArea className='relative w-full h-[calc(100vh-3.5rem-3rem)]'>
@@ -189,13 +189,13 @@ export default function page() {
             {(problemInfo && currentTab === "description") && <ProblemPageDescription problemInfo={problemInfo} />}
             {(problemInfo && currentTab === "solutions") && <ProblemPageSoluction />}
             {(problemInfo && currentTab === "submissions") && <ProblemPageSubmission theme={theme} problemInfo={problemInfo} setCurrentTab={setCurrentTab} setSubmissionOutput={setSubmissionOutput} />}
-            {(problemInfo && currentTab === "testResult") && <ProblemPageTestResult codeOutput={codeOutput} isCodeRunning={isCodeRunning} theme={theme} problemInfo={problemInfo} session={session} submissionOutput={submissionOutput} />}
+            {(problemInfo && currentTab === "testResult") && <ProblemPageTestResult codeOutput={codeOutput} isCodeRunning={isCodeRunning} theme={theme} problemInfo={problemInfo} session={session} submissionOutput={submissionOutput} setSubmissionOutput={setSubmissionOutput} />}
             <ProblemSideFooter />
           </ScrollArea>
 
         </ResizablePanel>
         <ResizableHandle />
-        <ResizablePanel defaultSize={50} className='rounded-md'>
+        <ResizablePanel defaultSize={50} minSize={30} className='rounded-md'>
           <ProblemPageCodeEditor theme={theme} selectedLanguage={selectedLanguage} setSelectedLanguage={setSelectedLanguage} setSelectedLanguageCode={setSelectedLanguageCode} sourceCode={sourceCode} setSourceCode={setSourceCode} />
         </ResizablePanel>
       </ResizablePanelGroup>

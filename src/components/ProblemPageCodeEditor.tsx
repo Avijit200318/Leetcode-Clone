@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import Editor from '@monaco-editor/react';
-import { Bookmark, Braces, ChevronUp, CodeXml, Maximize, Maximize2, RotateCcw } from 'lucide-react';
+import { Bookmark, Braces, ChevronUp, CodeXml, Copy, Maximize, Maximize2, Minimize2, RotateCcw } from 'lucide-react';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { IProblem } from '@/models/Problem';
-import axios from 'axios';
-import { codeRunValidation } from '@/schemas/codeRunSchema';
 import { toast } from 'sonner';
-import { ApiResponse } from '@/types/ApiResponse';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 
-interface problemEditorPropsType{
+interface ProblemPageCodeEditorType {
     theme: string | undefined,
     selectedLanguage: string,
     setSelectedLanguage: React.Dispatch<React.SetStateAction<string>>,
@@ -23,7 +24,9 @@ interface problemEditorPropsType{
     setSourceCode: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function ProblemPageCodeEditor({theme, selectedLanguage, setSelectedLanguage, setSelectedLanguageCode, sourceCode,setSourceCode}: problemEditorPropsType) {
+export default function ProblemPageCodeEditor({ theme, selectedLanguage, setSelectedLanguage, setSelectedLanguageCode, sourceCode, setSourceCode }: ProblemPageCodeEditorType) {
+    const [isFullScreen, setIsFullScreen] = useState(!document.fullscreenElement);
+    console.log("isFull: ", isFullScreen)
 
     const coddingLanguages = {
         "C": {
@@ -58,6 +61,29 @@ export default function ProblemPageCodeEditor({theme, selectedLanguage, setSelec
         changeLanguageCode();
     }, [selectedLanguage])
 
+    const handleResetCode = () => {
+        setSourceCode("");
+    }
+
+    const handleFullScreen = () => {
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen();
+            setIsFullScreen(!isFullScreen);
+        }
+    };
+
+    const handleExitFullScreen = () => {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+            setIsFullScreen(!isFullScreen);
+        }
+    };
+
+    const handleCopyToClipboard = () => {
+        navigator.clipboard.writeText(sourceCode);
+        toast.success("Copy to clipboard")
+    }
+
     return (
         <div className="w-full h-full bg-[var(--sidebar-accent)]">
             <div className="header">
@@ -67,15 +93,23 @@ export default function ProblemPageCodeEditor({theme, selectedLanguage, setSelec
                         <h1 className=''>Code</h1>
                     </div>
                     <div className="flex items-center gap-4 px-2">
-                        <Maximize className='resize-custom w-4 cursor-pointer' />
+                        <Tooltip>
+                            <TooltipTrigger>
+                                {isFullScreen ?
+                                    <Maximize onClick={handleFullScreen} className='resize-custom w-4 cursor-pointer' /> :
+                                    <Maximize onClick={handleExitFullScreen} className='resize-custom w-4 cursor-pointer' />
+                                }
+                            </TooltipTrigger>
+                            <TooltipContent className={`bg-[var(--sidebar-accent)] border ${theme === "dark" ? 'text-neutral-200 border-gray-600' : 'text-gray-600 border-gray-300'}`}>{isFullScreen ? 'Full screen' : 'Exit Full Screen'}</TooltipContent>
+                        </Tooltip>
                         <ChevronUp className='resize-custom w-5 cursor-pointer' />
                     </div>
                 </div>
-                <div style={{ background: "var(--card)" }} className={`w-full h-6 px-3 py-4 flex items-center justify-between ${theme === "dark"? 'text-neutral-400' : ''}`}>
+                <div style={{ background: "var(--card)" }} className={`w-full h-6 px-3 py-4 flex items-center justify-between ${theme === "dark" ? 'text-neutral-400' : ''}`}>
                     <DropdownMenu>
                         <DropdownMenuTrigger className='flex items-center gap-2 outline-none transition-all duration-300 hover:bg-[var(--sidebar-accent)] px-1 rounded-sm cursor-pointer'>{selectedLanguage} <ChevronUp className='resize-custom w-4 rotate-180' /></DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuItem onClickCapture={() => {setSelectedLanguage("C")}}>C</DropdownMenuItem>
+                            <DropdownMenuItem onClickCapture={() => { setSelectedLanguage("C") }}>C</DropdownMenuItem>
                             <DropdownMenuItem onClickCapture={() => setSelectedLanguage("C++")}>C++</DropdownMenuItem>
                             <DropdownMenuItem onClickCapture={() => setSelectedLanguage("Java")}>Java</DropdownMenuItem>
                             <DropdownMenuItem onClickCapture={() => setSelectedLanguage("Javascript")}>Javascript</DropdownMenuItem>
@@ -84,9 +118,27 @@ export default function ProblemPageCodeEditor({theme, selectedLanguage, setSelec
                     </DropdownMenu>
                     <div className="flex gap-3">
                         <Bookmark className='resize-custom w-4' />
-                        <Braces className='resize-custom w-4' />
-                        <RotateCcw className='resize-custom w-4' />
-                        <Maximize2 className='resize-custom w-4 ml-2' />
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Copy onClick={handleCopyToClipboard} className='resize-custom w-4 cursor-pointer' />
+                            </TooltipTrigger>
+                            <TooltipContent className={`bg-[var(--sidebar-accent)] border ${theme === "dark" ? 'text-neutral-200 border-gray-600' : 'text-gray-600 border-gray-300'}`}>Copy Code</TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <RotateCcw onClick={handleResetCode} className='resize-custom w-4 cursor-pointer' />
+                            </TooltipTrigger>
+                            <TooltipContent className={`bg-[var(--sidebar-accent)] border ${theme === "dark" ? 'text-neutral-200 border-gray-600' : 'text-gray-600 border-gray-300'}`}>Reset Editor</TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                {isFullScreen ?
+                                    <Maximize2 onClick={handleFullScreen} className='resize-custom w-4 ml-2 cursor-pointer' /> :
+                                    <Minimize2 onClick={handleExitFullScreen} className='resize-custom w-4 ml-2 cursor-pointer' />
+                                }
+                            </TooltipTrigger>
+                            <TooltipContent className={`bg-[var(--sidebar-accent)] border ${theme === "dark" ? 'text-neutral-200 border-gray-600' : 'text-gray-600 border-gray-300'}`}>{isFullScreen ? 'Full screen' : 'Exit Full Screen'}</TooltipContent>
+                        </Tooltip>
                     </div>
                 </div>
             </div>

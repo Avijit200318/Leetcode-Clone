@@ -16,6 +16,7 @@
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-scroll-area": "^1.2.10",
     "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tooltip": "^1.2.8",
     "@react-email/components": "^0.0.9",
     "@uiw/react-md-editor": "^4.0.8",
     "axios": "^1.12.2",

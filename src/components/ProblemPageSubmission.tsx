@@ -8,7 +8,13 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner';
 import { Skeleton } from './ui/skeleton';
 
-export default function ProblemPageSubmission({ theme, problemInfo, setCurrentTab, setSubmissionOutput }: { theme: string | undefined, problemInfo: IProblem, setCurrentTab: React.Dispatch<React.SetStateAction<string>>, setSubmissionOutput: React.Dispatch<React.SetStateAction<codeSubmissionResultType | null>> }) {
+interface ProblemPageSubmissionType {
+  theme: string | undefined,
+  problemInfo: IProblem,
+  setCurrentTab: React.Dispatch<React.SetStateAction<string>>, setSubmissionOutput: React.Dispatch<React.SetStateAction<codeSubmissionResultType | null>> 
+}
+
+export default function ProblemPageSubmission({ theme, problemInfo, setCurrentTab, setSubmissionOutput }: ProblemPageSubmissionType) {
   const [submission, setSubmission] = useState<codeSubmissionResultType[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -18,7 +24,6 @@ export default function ProblemPageSubmission({ theme, problemInfo, setCurrentTa
       try {
         const res = await axios.get<ApiResponse>(`/api/problem/get-submitted-code?problemId=${problemInfo._id}`);
 
-        console.log(res.data.solutions);
         setSubmission(res.data.solutions as codeSubmissionResultType[]);
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -67,13 +72,13 @@ export default function ProblemPageSubmission({ theme, problemInfo, setCurrentTa
         <div key={index} onClick={()=> handleClick(ele)} className="w-full flex items-center justify-between py-1 border-b border-t cursor-pointer px-2">
           <p className=''>{index + 1}</p>
           <div className="">
-            <h1 className="text-lg font-semibold text-green-500">{ele.status}</h1>
+            <h1 className={`text-lg font-semibold ${ele.status === "Accepted"? 'text-green-500' : 'text-red-500'}`}>{ele.status}</h1>
             <h2 className={`text-sm ${theme === "dark" ? 'text-neutral-300' : ''}`}>{formatDate(ele.createdAt as Date)}</h2>
           </div>
           <div className="flex items-center gap-16 w-[30rem]">
             <h3 className="px-2 py-0.5 rounded-full bg-[var(--sidebar-accent)]">{ele.language}</h3>
-            <h3 className={`flex items-center gap-1 ${theme === "dark" ? 'text-neutral-300' : ''}`}><Clock4 className='resize-custom w-4' /> {(ele.time * 100).toFixed(2)}ms</h3>
-            <h3 className={`flex items-center gap-1 ${theme === "dark" ? 'text-neutral-300' : ''} ml-6`}><Cpu className='resize-custom w-4' /> {(ele.memory * 1024).toFixed(2)}Mb</h3>
+            <h3 className={`flex items-center gap-1 ${theme === "dark" ? 'text-neutral-300' : ''}`}><Clock4 className='resize-custom w-4' /> {ele.status === "Accepted"? `${(ele.time * 1000).toFixed(2)} ms` : 'N/A'}</h3>
+            <h3 className={`flex items-center gap-1 ${theme === "dark" ? 'text-neutral-300' : ''} ${ele.status === "Accepted"? 'ml-6' : 'ml-12.5'}`}><Cpu className='resize-custom w-4' /> {ele.status === "Accepted"? `${(ele.memory).toFixed(2)} MB` : 'N/A'}</h3>
           </div>
         </div>
       )}

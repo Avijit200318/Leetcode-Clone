@@ -30,6 +30,7 @@ import ProblemPageSoluction from '@/components/ProblemPageSoluction';
 import ProblemPageSubmission from '@/components/ProblemPageSubmission';
 import ProblemPageTestResult from '@/components/ProblemPageTestResult';
 import { codeSubmissionValidation } from '@/schemas/codeSubmissionSchema';
+import ProblemPageAiTab from '@/components/ProblemPageAiTab';
 
 export default function page() {
   const [mounted, setMounted] = useState<boolean>(false);
@@ -87,6 +88,7 @@ export default function page() {
 
     setIsCodeRunning(true);
     setCurrentTab("testResult");
+    setCodeOutput(null);
     try {
       const data = {
         sourceCode: sourceCode,
@@ -104,12 +106,12 @@ export default function page() {
       const res = await axios.post<ApiResponse>("/api/code/run-code", data);
 
       toast.success("Code run successfully");
-      // console.log("codeoutput: ", res.data.results);
+      console.log("codeoutput: ", res.data.results);
       setCodeOutput(res.data.results ?? null);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        console.log("Code run error: ", error.response.data.message);
-        toast.error(error.response.data.message);
+        console.log("Code run error: ", error.response.data.message || "Check your code and try again");
+        toast.error(error.response.data.message || "Check your code and try again");
       } else {
         console.log("Error while running the code", error);
         toast.error("Error while running the code");
@@ -169,7 +171,7 @@ export default function page() {
           <Button disabled={session?.user ? false : true} onClick={handleCodeSubmission} variant="secondary" className='w-30 cursor-pointer relative z-40 text-base flex items-center gap-2 font-semibold'>
             {isSubmitLoading ? <><Loader2 className='resize-custom w-5 animate-spin' />Running</> : <><CloudUpload className='resize-custom w-5' /> Submit</>}
           </Button>
-          <Button disabled={session?.user ? false : true} variant="secondary" className='cursor-pointer relative z-40'><Sparkles /></Button>
+          <Button onClick={()=> setCurrentTab("chatBot")} disabled={session?.user ? false : true} variant="secondary" className='cursor-pointer relative z-40'><Sparkles /></Button>
         </div>
       </div>
 
@@ -190,6 +192,7 @@ export default function page() {
             {(problemInfo && currentTab === "solutions") && <ProblemPageSoluction />}
             {(problemInfo && currentTab === "submissions") && <ProblemPageSubmission theme={theme} problemInfo={problemInfo} setCurrentTab={setCurrentTab} setSubmissionOutput={setSubmissionOutput} />}
             {(problemInfo && currentTab === "testResult") && <ProblemPageTestResult codeOutput={codeOutput} isCodeRunning={isCodeRunning} theme={theme} problemInfo={problemInfo} session={session} submissionOutput={submissionOutput} setSubmissionOutput={setSubmissionOutput} />}
+            {(problemInfo && currentTab === "chatBot") && <ProblemPageAiTab />}
             <ProblemSideFooter />
           </ScrollArea>
 

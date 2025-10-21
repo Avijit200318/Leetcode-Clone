@@ -92,6 +92,9 @@ export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme
                         {codeOutput[viewTestCase].stdout?.trim().split("\n").map((value, index) =>
                             <div key={index} className="w-full h-16 bg-[var(--sidebar-accent)] mb-2 p-4 rounded-md font-semibold">{value}</div>
                         )}
+                        {(codeOutput[viewTestCase].compile_output && !codeOutput[viewTestCase].stdout) &&
+                            <div className="w-full min-h-16 bg-[var(--sidebar-accent)] mb-2 p-4 rounded-md font-semibold text-red-500">{codeOutput[viewTestCase].compile_output}</div>
+                        }
                         <h2 className={`mb-2 font-semibold ${theme === "dark" ? 'text-neutral-400' : ''}`}>Expected</h2>
                         {outputValues.map((value, index) =>
                             <div key={index} className="w-full h-16 bg-[var(--sidebar-accent)] mb-2 p-4 rounded-md font-semibold">{value}</div>
@@ -134,7 +137,7 @@ export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme
                 </div>
 
                 {(submissionOutput && submissionOutput.status === "Accepted") && <div className="w-full h-[20rem] overflow-hidden">
-                    <CustomBarChart />
+                    <CustomBarChart session={session} labelValue={submissionOutput.time} />
                 </div>}
                 <div className={`flex items-center mt-6 mb-4 ${theme === "dark" ? 'text-neutral-400' : ''}`}>
                     <h2 className="font-semibold px-2 border-r-2">Code</h2>

@@ -1,7 +1,7 @@
 'use client';
 
-import React from "react";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import React, { useEffect } from "react";
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts";
 import {
     Card,
     CardContent,
@@ -12,25 +12,26 @@ import {
     ChartTooltipContent,
     ChartConfig,
 } from "@/components/ui/chart";
+import { Session } from "next-auth";
 
 export const description = "Runtime vs Performance Chart";
 
-export default function CustomBarChart() {
+export default function CustomBarChart({ session, labelValue }: { session: Session | null, labelValue: number }) {
     // Simulated LeetCode-like performance data
     const chartData = [
-        { time: "5ms", performance: 98 },
-        { time: "10ms", performance: 60 },
-        { time: "15ms", performance: 68 },
-        { time: "20ms", performance: 65 },
-        { time: "25ms", performance: 75 },
-        { time: "30ms", performance: 45 },
-        { time: "35ms", performance: 65 },
-        { time: "40ms", performance: 40 },
-        { time: "50ms", performance: 55 },
-        { time: "60ms", performance: 49 },
-        { time: "75ms", performance: 40 },
-        { time: "90ms", performance: 30 },
-        { time: "100ms", performance: 25 },
+        { time: 5, performance: 90 },
+        { time: 10, performance: 60 },
+        { time: 15, performance: 68 },
+        { time: 20, performance: 65 },
+        { time: 25, performance: 75 },
+        { time: 30, performance: 45 },
+        { time: 35, performance: 65 },
+        { time: 40, performance: 40 },
+        { time: 50, performance: 55 },
+        { time: 60, performance: 49 },
+        { time: 75, performance: 40 },
+        { time: 90, performance: 30 },
+        { time: 100, performance: 25 },
     ];
 
     const chartConfig = {
@@ -40,6 +41,42 @@ export default function CustomBarChart() {
         },
     } satisfies ChartConfig;
 
+    const findBarForLabel = (value: number) => {
+        for (let i = 0; i < chartData.length; i++) {
+            if (value < chartData[i].time) return chartData[i].time;
+        }
+        return chartData[chartData.length - 1].time;
+    }
+
+    // Custom label renderer to display image
+    const renderCustomLabel = (props: any) => {
+        if (!session) return null;
+        // fetchs bar position and values
+        const { x, y, width, index } = props;
+
+        // showing image
+        const barData = chartData[index];
+        if (barData.time !== findBarForLabel(labelValue)) return null;
+
+        const imgSize = 26; // image width/height
+        return (
+            <foreignObject
+                x={x + width / 2 - imgSize / 2}
+                y={y - imgSize - 4}
+                width={imgSize}
+                height={imgSize}
+                rx={imgSize / 2}
+                ry={imgSize / 2}
+            >
+                <img
+                    src={session.user.avatar}
+                    className="w-full h-full rounded-full object-contain border-2 border-blue-400"
+                    alt="avatar"
+                />
+            </foreignObject>
+        );
+    };
+
     return (
         <Card className="w-full h-full py-4">
             <CardContent className="w-full h-full px-1">
@@ -48,6 +85,7 @@ export default function CustomBarChart() {
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
                         <XAxis
                             dataKey="time"
+                            tickFormatter={(v) => `${v}ms`}
                             tickLine={false}
                             axisLine={false}
                             tickMargin={10}
@@ -69,7 +107,9 @@ export default function CustomBarChart() {
                             cursor={false}
                             content={<ChartTooltipContent labelFormatter={(v) => `${v} Runtime`} />}
                         />
-                        <Bar dataKey="performance" fill="var(--color-performance)" radius={6} barSize={30} />
+                        <Bar dataKey="performance" fill="var(--color-performance)" radius={6} barSize={30} >
+                            <LabelList dataKey="performance" content={renderCustomLabel} />
+                        </Bar>
                     </BarChart>
                 </ChartContainer>
             </CardContent>

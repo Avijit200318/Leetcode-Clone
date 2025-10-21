@@ -26,7 +26,6 @@ interface ProblemPageCodeEditorType {
 
 export default function ProblemPageCodeEditor({ theme, selectedLanguage, setSelectedLanguage, setSelectedLanguageCode, sourceCode, setSourceCode }: ProblemPageCodeEditorType) {
     const [isFullScreen, setIsFullScreen] = useState(!document.fullscreenElement);
-    console.log("isFull: ", isFullScreen)
 
     const coddingLanguages = {
         "C": {

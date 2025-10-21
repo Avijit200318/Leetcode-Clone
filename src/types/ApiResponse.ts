@@ -41,4 +41,5 @@ export interface ApiResponse {
     problem?: IProblem,
     allProblems?: IProblem[],
     results?: Judge0SubmissionResult[],
+    output?: string
 }

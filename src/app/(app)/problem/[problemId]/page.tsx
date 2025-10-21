@@ -192,7 +192,7 @@ export default function page() {
             {(problemInfo && currentTab === "solutions") && <ProblemPageSoluction />}
             {(problemInfo && currentTab === "submissions") && <ProblemPageSubmission theme={theme} problemInfo={problemInfo} setCurrentTab={setCurrentTab} setSubmissionOutput={setSubmissionOutput} />}
             {(problemInfo && currentTab === "testResult") && <ProblemPageTestResult codeOutput={codeOutput} isCodeRunning={isCodeRunning} theme={theme} problemInfo={problemInfo} session={session} submissionOutput={submissionOutput} setSubmissionOutput={setSubmissionOutput} />}
-            {(problemInfo && currentTab === "chatBot") && <ProblemPageAiTab />}
+            {(problemInfo && currentTab === "chatBot") && <ProblemPageAiTab sourceCode={sourceCode} theme={theme} />}
             <ProblemSideFooter />
           </ScrollArea>
 

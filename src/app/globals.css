@@ -143,7 +143,6 @@
   background-color: #ccc;        /* lighter on hover */
 }
 
-
 @layer base {
   :root {
     --chart-1: oklch(0.646 0.222 41.116);

@@ -31,6 +31,7 @@ import ProblemPageSubmission from '@/components/ProblemPageSubmission';
 import ProblemPageTestResult from '@/components/ProblemPageTestResult';
 import { codeSubmissionValidation } from '@/schemas/codeSubmissionSchema';
 import ProblemPageAiTab from '@/components/ProblemPageAiTab';
+import confetti from "canvas-confetti";
 
 export default function page() {
   const [mounted, setMounted] = useState<boolean>(false);
@@ -121,9 +122,17 @@ export default function page() {
     }
   }
 
+  const showConfetti = () => {
+    confetti({
+      particleCount: 200,
+      spread: 100,
+      origin: { y: 0.65 },
+    });
+  }
+
   const handleCodeSubmission = async () => {
-    if(!problemInfo || !session) return;
-    
+    if (!problemInfo || !session) return;
+
     setIsSubmitLoading(true);
     try {
       const data = {
@@ -144,17 +153,18 @@ export default function page() {
 
       const res = await axios.post<ApiResponse>("/api/code/submit-code", data);
       toast.success("Code submitted successfully");
+      showConfetti()
       console.log("Code submitted successfully: ", res.data.submissionOutput);
-      setSubmissionOutput(res.data.submissionOutput?? null);
+      setSubmissionOutput(res.data.submissionOutput ?? null);
     } catch (error) {
-      if(axios.isAxiosError(error) && error.response){
+      if (axios.isAxiosError(error) && error.response) {
         toast.error(error.response.data.message);
         console.log("Code submission error: ", error.response.data.message);
-      } else{
+      } else {
         toast.error("Error while submitting the code");
         console.log("Error while submitting the code ", error);
       }
-    } finally{
+    } finally {
       setIsSubmitLoading(false);
     }
   }
@@ -171,7 +181,7 @@ export default function page() {
           <Button disabled={session?.user ? false : true} onClick={handleCodeSubmission} variant="secondary" className='w-30 cursor-pointer relative z-40 text-base flex items-center gap-2 font-semibold'>
             {isSubmitLoading ? <><Loader2 className='resize-custom w-5 animate-spin' />Running</> : <><CloudUpload className='resize-custom w-5' /> Submit</>}
           </Button>
-          <Button onClick={()=> setCurrentTab("chatBot")} disabled={session?.user ? false : true} variant="secondary" className='cursor-pointer relative z-40'><Sparkles /></Button>
+          <Button onClick={() => setCurrentTab("chatBot")} disabled={session?.user ? false : true} variant="secondary" className='cursor-pointer relative z-40'><Sparkles /></Button>
         </div>
       </div>
 

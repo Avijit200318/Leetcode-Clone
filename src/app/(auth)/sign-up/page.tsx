@@ -135,7 +135,7 @@ export default function page() {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <div className="relative w-auto h-auto">
-                      <Input type={isShowingPassword ? 'text' : 'password'} placeholder="Password" {...field} className='text-base p-4 h-11' />
+                      <Input type={isShowingPassword ? 'text' : 'password'} placeholder="Password" {...field} className='text-base p-4 h-11 focus-visible:ring-0' />
                       {isShowingPassword ? <Eye onClick={handlePasswordShow} className={`absolute right-0 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer ${theme === "dark" ? 'text-neutral-400' : ''}`} /> : <EyeClosed onClick={handlePasswordShow} className={`absolute right-0 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer ${theme === "dark" ? 'text-neutral-400' : ''}`} />}
                     </div>
                   </FormControl>

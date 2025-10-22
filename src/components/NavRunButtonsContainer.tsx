@@ -1,8 +1,7 @@
 "use client";
 import Link from 'next/link'
 import React, { useState } from 'react'
-import { Button } from './ui/button'
-import { CloudUpload, Flame, ListVideo, Loader2, Play, Shuffle, Sparkles } from 'lucide-react'
+import { Flame, ListVideo, Shuffle } from 'lucide-react'
 import { Session } from 'next-auth';
 
 interface NavRunButtonType {
@@ -11,8 +10,6 @@ interface NavRunButtonType {
 }
 
 export default function NavRunButtonsContainer({ theme, session }: NavRunButtonType) {
-  const [isRunLoading, setIsRunLoading] = useState<boolean>(false);
-  const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
 
   return (
     <div className="w-[80%] px-4 border-l flex justify-between items-center h-full">

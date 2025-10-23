@@ -1,24 +1,12 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
-
-const chartData = [
-  {
-    month: "january",
-    easy: 30,
-    medium: 20,
-    hard: 30,
-    easyMax: 100,
-    mediumMax: 150,
-    hardMax: 200,
-    easyRemaining: 100 - 30,
-    mediumRemaining: 150 - 20,
-    hardRemaining: 200 - 30,
-  },
-];
+import { IUser } from "@/models/User";
+import { IProblem } from "@/models/Problem";
+import { LevelWiseProblemType } from "@/app/(app)/problems/page";
 
 // Chart configuration
 const chartConfig = {
@@ -27,7 +15,23 @@ const chartConfig = {
   hard: { label: "Hard", color: "#bb252d" },
 } satisfies ChartConfig;
 
-export default function CustomRadialChart() {
+
+export default function CustomRadialChart({totalLevelWiseProblem, userTotalLevelProblem}: {totalLevelWiseProblem: LevelWiseProblemType, userTotalLevelProblem: LevelWiseProblemType}) {
+
+  const chartData = [
+    {
+      easy: userTotalLevelProblem.easy,
+      medium: userTotalLevelProblem.medium,
+      hard: userTotalLevelProblem.hard,
+      easyMax: totalLevelWiseProblem.easy,
+      mediumMax: totalLevelWiseProblem.medium,
+      hardMax: totalLevelWiseProblem.hard,
+      easyRemaining: totalLevelWiseProblem.easy - userTotalLevelProblem.easy,
+      mediumRemaining: totalLevelWiseProblem.medium - userTotalLevelProblem.medium,
+      hardRemaining: totalLevelWiseProblem.hard - userTotalLevelProblem.hard,
+    },
+  ];
+
   const totalSolved = chartData[0].easy + chartData[0].medium + chartData[0].hard;
   const totalMax = chartData[0].easyMax + chartData[0].mediumMax + chartData[0].hardMax;
 
@@ -69,7 +73,7 @@ export default function CustomRadialChart() {
                   }
                 }}
               />
-            </PolarRadiusAxis>            
+            </PolarRadiusAxis>
 
             <RadialBar
               dataKey="hardRemaining"

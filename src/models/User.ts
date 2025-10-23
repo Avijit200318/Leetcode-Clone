@@ -1,4 +1,5 @@
 import mongoose, {Document, model, models, Schema, Types} from "mongoose";
+import { IProblem } from "./Problem";
 
 export interface IUser extends Document{
     username: string,
@@ -17,7 +18,7 @@ export interface IUser extends Document{
     solvedProblems: number,
     solutions: Types.ObjectId[],
     submissions: Types.ObjectId[],
-    solvedQuestions: Types.ObjectId[],
+    solvedQuestions: Types.ObjectId[] | IProblem[],
     createdAt?: Date,
     updatedAt?: Date,
 }
@@ -89,7 +90,7 @@ const userSchema = new Schema<IUser>({
     }],
     solvedQuestions: [{
         type: Schema.Types.ObjectId,
-        ref: "SolvedQuestion"
+        ref: "Problem"
     }]
 }, {timestamps: true});
 

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
+import { getToken } from "next-auth/jwt";
 
 const runtime = "edge";
 
@@ -14,6 +15,15 @@ const ai = new GoogleGenAI({
 })
 
 export async function POST(req: NextRequest) {
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    
+        if (!token) {
+            return NextResponse.json({
+                success: false,
+                message: "Unauthorized"
+            }, { status: 400 });
+        }
+
     try {
         const { sourceCode, inputMessage } = await req.json();
 

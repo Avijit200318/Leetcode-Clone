@@ -609,3 +609,57 @@ The response will be a JSON object with the following fields:
   "output": "The function correctly sums positive and negative numbers..."
 }
 ```
+## Endpoint: `/api/user/user/get-user?userId=650f4c8e2b3c97b...`
+
+### Description
+This endpoint allows you to **fetch user details along with their solved questions**. It performs the following actions:
+
+- Connects to the database using `connectToDb`.
+- Retrieves the user by the provided `userId`.
+- Populates the `solvedQuestions` field with the corresponding problem details.
+- Returns the user information if found, otherwise returns an error message.
+
+### Method
+`GET`
+
+### Query Parameters
+
+- `userId` (string – MongoDB ObjectId): The ID of the user to fetch (required)  
+
+#### Example Request
+```json
+GET /api/user/get-user?userId=650f4c8e2b3c97b12c7df123
+```
+
+### Example Response
+
+The response will be a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful (`true`) or not (`false`).  
+- `message` (string): Provides additional information about the result.  
+- `user` (object): The user document, including populated `solvedQuestions`.
+
+#### Example Success Response
+```json
+{
+  "success": true,
+  "message": "User found successfully",
+  "user": {
+    "_id": "650f4c8e2b3c97b12c7df123",
+    "username": "john_doe",
+    "email": "john@example.com",
+    "solvedQuestions": [
+      {
+        "_id": "6510d8b26b3c97b12c7df456",
+        "title": "Two Sum",
+        "level": "Medium",
+        "description": "Given an array of integers `nums`...",
+        "topics": "Array, Hash Table",
+        "companies": "Google, Amazon"
+      }
+    ],
+    "createdAt": "2025-10-14T18:30:00.000Z",
+    "updatedAt": "2025-10-14T18:30:00.000Z"
+  }
+}
+```

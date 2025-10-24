@@ -44,6 +44,9 @@ export default function page() {
     medium: 0,
     hard: 0
   })
+  const [filteredProblems, setFilteredProblems] = useState<IProblem[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filter, setFilter] = useState<string>("");
 
   const problemColors = {
     "Easy": "text-green-500",
@@ -60,6 +63,7 @@ export default function page() {
         const res = await axios.get<ApiResponse>("/api/problem/all-problems");
 
         setAllProblems(res.data.allProblems || []);
+        setFilteredProblems(res.data.allProblems || []);
         if (!res.data.success) return;
         const data = levelWiseProblemSeperate(res.data.allProblems as IProblem[]);
         setTotalLevelWiseProblem({
@@ -92,9 +96,9 @@ export default function page() {
 
         setFullUserInfo(res.data.user || null);
 
-        if(!res.data.success) return;
+        if (!res.data.success) return;
         const data = levelWiseProblemSeperate(res.data.user?.solvedQuestions as IProblem[]);
-        
+
         setUserEachLevelProblem({
           easy: data.e, medium: data.m, hard: data.h
         });
@@ -121,6 +125,43 @@ export default function page() {
       if ((fullUserInfo.solvedQuestions[i]._id as string | ObjectId).toString() === problemId) return true;
     }
     return false;
+  }
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+
+    if (!value) {
+      setFilteredProblems(allProblems);
+      return;
+    }
+
+    const filtered = allProblems.filter(problem =>
+      problem.title.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredProblems(filtered);
+  };
+
+  const handleFilterBtn = (level: string) => {
+    const temp = filter === level ? "" : level;
+    setFilter(temp);
+
+    if (!temp) {
+      setFilteredProblems(allProblems);
+    } else {
+      const filtered = allProblems.filter((problem) =>
+        problem.level === temp
+      )
+      setFilteredProblems(filtered);
+    }
+  }
+
+  const handleReverseArray = () => {
+    let temp = [];
+    for (let i = filteredProblems.length - 1; i >= 0; i--) {
+      temp.push(filteredProblems[i]);
+    }
+    setFilteredProblems(temp);
   }
 
   return (
@@ -174,17 +215,17 @@ export default function page() {
           <div className="flex items-center gap-4">
             <div className="w-[20rem] rounded-full overflow-hidden flex gap-1 items-center px-4 bg-input">
               <Search className='resize-custom w-5 text-gray-400' />
-              <Input style={{ background: "transparent !important" }} placeholder='Search questions' className='border-none outline-none focus-visible:ring-[0px]' />
+              <Input onChange={handleSearch} style={{ background: "transparent !important" }} placeholder='Search questions' className='border-none outline-none focus-visible:ring-[0px]' value={searchQuery} />
             </div>
-            <Button variant="outline" className='rounded-full w-9 h-9 cursor-pointer'><ArrowDownUp className='resize-custom w-4 text-gray-400' /></Button>
+            <Button onClick={handleReverseArray} variant="outline" className='rounded-full w-9 h-9 cursor-pointer'><ArrowDownUp className='resize-custom w-4 text-gray-400' /></Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className='rounded-full w-9 h-9 cursor-pointer'><Funnel className='resize-custom w-4 text-gray-400' /></Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem>Easy</DropdownMenuItem>
-                <DropdownMenuItem>Medium</DropdownMenuItem>
-                <DropdownMenuItem>Heard</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleFilterBtn("Easy")} className='justify-between'>Easy {filter === "Easy" && <Check className='text-orange-300' />}</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleFilterBtn("Medium")} className='justify-between'>Medium {filter === "Medium" && <Check className='text-orange-300' />}</DropdownMenuItem>
+                <DropdownMenuItem className='justify-between' onClick={() => handleFilterBtn("Hard")}>Hard  {filter === "Hard" && <Check className='text-orange-300' />}</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -198,7 +239,7 @@ export default function page() {
               <Skeleton className="w-full h-12 flex items-center gap-2 px-4 rounded-md mb-2"></Skeleton>
             </div>
           }
-          {(allProblems.length > 0 && !isLoading) && allProblems.map((problem, index) =>
+          {(filteredProblems.length > 0 && !isLoading) && filteredProblems.map((problem, index) =>
             <Link key={index} href={`/problem/${problem._id}`}>
               <div className={`w-full h-12 flex items-center gap-2 px-4 rounded-md ${index % 2 === 0 ? 'bg-[var(--sidebar-accent)]' : ''}`}>
                 <h2 className="w-[5%] flex justify-center">{checkIsProblemSolvedOrnot(problem._id as string) && <Check className='resize-custom w-5 text-orange-400' />}</h2>

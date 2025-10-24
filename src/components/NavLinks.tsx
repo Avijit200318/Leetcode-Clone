@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { Session } from 'next-auth';
 
 export default function NavLinks({theme, session, pathname}: {theme: string | undefined, session: Session | null, pathname: string}) {
-  console.log(pathname)
   return (
     <div className="flex gap-6 w-[80%]">
         <Link href="/problems" className={`${theme === "dark"? pathname === "/problems"? 'text-white': 'text-neutral-300' 

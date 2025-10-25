@@ -111,8 +111,9 @@ export default function page() {
       setCodeOutput(res.data.results ?? null);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        console.log("Code run error: ", error.response.data.message || "Check your code and try again");
-        toast.error(error.response.data.message || "Check your code and try again");
+        console.log("Code run error: ", error.response.data.message || "Please check your code and try again. You can also ask Leet for help.");
+        toast.error(error.response.data.message || "Please check your code and try again. You can also ask Leet for help.");
+        setCurrentTab("chatBot");
       } else {
         console.log("Error while running the code", error);
         toast.error("Error while running the code");
@@ -158,8 +159,8 @@ export default function page() {
       setSubmissionOutput(res.data.submissionOutput ?? null);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        toast.error(error.response.data.message);
-        console.log("Code submission error: ", error.response.data.message);
+        toast.error(error.response.data.message || "Please check your code and try again. You can also ask Leet for help.");
+        console.log("Code submission error: ", error.response.data.message || "Please check your code and try again. You can also ask Leet for help.");
       } else {
         toast.error("Error while submitting the code");
         console.log("Error while submitting the code ", error);
@@ -198,7 +199,7 @@ export default function page() {
             </div>
             }
 
-            {(problemInfo && currentTab === "description") && <ProblemPageDescription problemInfo={problemInfo} />}
+            {(problemInfo && currentTab === "description") && <ProblemPageDescription problemInfo={problemInfo} session={session} />}
             {(problemInfo && currentTab === "solutions") && <ProblemPageSoluction />}
             {(problemInfo && currentTab === "submissions") && <ProblemPageSubmission theme={theme} problemInfo={problemInfo} setCurrentTab={setCurrentTab} setSubmissionOutput={setSubmissionOutput} />}
             {(problemInfo && currentTab === "testResult") && <ProblemPageTestResult codeOutput={codeOutput} isCodeRunning={isCodeRunning} theme={theme} problemInfo={problemInfo} session={session} submissionOutput={submissionOutput} setSubmissionOutput={setSubmissionOutput} />}

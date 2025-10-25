@@ -150,8 +150,6 @@ export default function ProblemPageCodeEditor({ theme, selectedLanguage, setSele
                     automaticLayout: true,
                     minimap: { enabled: false },
                     // optional, removes extra width
-                    scrollBeyondLastLine: false,
-                    // prevents extra empty scroll space
                     lineNumbers: "on",
                 }}
                 className='w-full h-[calc(100vh-8.7rem)]'

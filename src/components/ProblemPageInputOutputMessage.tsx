@@ -13,7 +13,7 @@ export default function ProblemPageInputOutputMessage({chats, isSubmitting}: {ch
             {chats.length > 0 && chats.map((ele, index) =>
                 <div key={index}>
                     <div className='w-full flex justify-end'>
-                        <div className="w-[22rem] min-h-12 rounded-md p-3 bg-[var(--chart-4)]">
+                        <div className="w-[22rem] min-h-12 rounded-md p-3 bg-[var(--chart-4)] whitespace-pre-wrap">
                             {ele.input}
                         </div>
                     </div>

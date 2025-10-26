@@ -67,10 +67,10 @@ export async function POST(req: NextRequest) {
         }, { status: 201 });
 
     } catch (error) {
-        console.error("Error adding problem: ", error);
+        console.error("Something went wrong while adding problem: ", error);
         return NextResponse.json({
             success: false,
-            message: "Error adding problem"
+            message: "Something went wrong while adding problem"
         }, { status: 500 });
     }
 }

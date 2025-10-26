@@ -27,10 +27,10 @@ export async function GET(req: NextRequest) {
             user
         }, { status: 200 });
     } catch (error) {
-        console.log("Error while fetching the user info: ", error);
+        console.log("Something went wrong while fetching the user info: ", error);
         return NextResponse.json({
             success: false,
-            message: "Error while fetching the user info"
-        }, { status: 400 });
+            message: "Something went wrong while fetching the user info"
+        }, { status: 500 });
     }
 }

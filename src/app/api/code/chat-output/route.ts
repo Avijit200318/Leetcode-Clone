@@ -62,10 +62,10 @@ ${sourceCode}
             output: text
         }, { status: 200 });
     } catch (error) {
-        console.error("Gemini API Error:", error);
+        console.error("Something went wrong Gemini API Error:", error);
         return NextResponse.json({
             success: false,
-            message: "Gemini api error or server error",
-        }, { status: 400 });
+            message: "Something went wrong in Gemini api error",
+        }, { status: 500 });
     }
 }

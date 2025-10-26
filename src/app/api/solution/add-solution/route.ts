@@ -64,10 +64,10 @@ export async function POST(req: NextRequest) {
         }, { status: 201 })
 
     } catch (error) {
-        console.error("Error adding solution: ", error);
+        console.error("Something went wrong while adding solution: ", error);
         return NextResponse.json({
             success: false,
-            message: "Error adding solution"
+            message: "Something went wrong while adding solution"
         }, { status: 500 });
     }
 }

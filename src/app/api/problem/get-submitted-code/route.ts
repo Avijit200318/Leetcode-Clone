@@ -73,10 +73,10 @@ export async function GET(req: NextRequest) {
             solutions: submittedCodes[0]?.submissionDetails || []
         });
     } catch (error) {
-        console.error("Error fetching submissions for this problem: ", error);
+        console.error("Something went wrong while fetching submissions for this problem: ", error);
         return NextResponse.json({
             success: false,
-            message: "Error fetching submissions for this problem"
+            message: "Something went wrong while fetching submissions for this problem"
         }, { status: 500 });
     }
 }

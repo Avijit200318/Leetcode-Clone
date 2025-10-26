@@ -20,10 +20,10 @@ export async function GET(req: NextRequest) {
             allProblems
         }, { status: 200 })
     } catch (error) {
-        console.log("Error while fetching all problems: ", error);
+        console.log("Something went wrong while fetching all problems: ", error);
         return NextResponse.json({
             success: false,
-            message: "Error while fetching all problems"
-        }, { status: 401 });
+            message: "Something went wrong while fetching all problems"
+        }, { status: 500 });
     }
 }

@@ -53,10 +53,10 @@ export async function POST(req: NextRequest) {
             message: "Email send successfully",
         }, {status: 200});
     } catch (error) {
-        console.error("Error sending forget password email: ", error);
+        console.error("Something went wrong while sending forget password email: ", error);
         return NextResponse.json({
             success: false,
-            message: "Error while sending forget password email"
+            message: "Something went wrong while sending forget password email"
         }, { status: 500 });
     }
 }

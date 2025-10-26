@@ -116,10 +116,10 @@ export async function POST(req: NextRequest) {
         }, { status: 201 });
 
     } catch (error) {
-        console.error("Error during code submitting: ", error);
+        console.error("Something went wrong during code submitting: ", error);
         return NextResponse.json({
             success: false,
-            message: "Error during code submitting"
+            message: "Something went wrong during code submitting"
         }, { status: 500 });
     }
 }

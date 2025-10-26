@@ -61,10 +61,10 @@ export async function POST(req: NextRequest) {
             }, {status: 400});
         }
     } catch (error) {
-        console.error("Error changing password: ", error);
+        console.error("Something went wrong while changing password: ", error);
         return NextResponse.json({
             success: false,
-            message: "Error changing password"
+            message: "Something went wrong while changing password"
         }, { status: 500 });
     }
 }

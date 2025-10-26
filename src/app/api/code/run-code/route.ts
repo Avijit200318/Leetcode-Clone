@@ -43,11 +43,11 @@ export async function POST(req: NextRequest) {
             results: response.result,
         }, { status: 200 });
     } catch (error) {
-        console.error("Error while submitting code into api:", error);
+        console.error("Something went wrong while submitting code into api:", error);
         return NextResponse.json(
             {
                 success: false,
-                message: "Error while submitting code into api",
+                message: "Something went wrong while submitting code into api",
             }, { status: 500 });
     }
 }

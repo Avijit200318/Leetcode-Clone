@@ -67,10 +67,10 @@ export async function POST(req: NextRequest){
             }, {status: 400});
         }
     } catch (error) {
-        console.error("Error veifying code: ", error);
+        console.error("Something went wrong while veifying code: ", error);
         return NextResponse.json({
             success: false,
-            message: "Error verifying code"
+            message: "Something went wrong while verifying code"
         }, { status: 500 });
     }
 }

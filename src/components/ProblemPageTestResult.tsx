@@ -9,6 +9,7 @@ import { Session } from 'next-auth'
 import CustomBarChart from './CustomBarChart'
 import { formatDate } from '@/helpers/formatDate'
 import MDEditor from '@uiw/react-md-editor';
+import Link from 'next/link'
 
 interface ProblemPageTestResultType {
     codeOutput: Judge0SubmissionResult[] | null,
@@ -121,7 +122,7 @@ export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme
                             <p className={`text-sm ${theme === "dark" ? 'text-neutral-400' : ''}`}>Submitted at {formatDate(submissionOutput.createdAt as Date)}</p>
                         </div>
                     </div>
-                    {submissionOutput.status === "Accepted" ? <Button className='bg-green-500 text-white font-semibold cursor-pointer hover:bg-green-600 duration-300'><SquarePen className='resize-custom w-4 h-4' /> Solution</Button>:
+                    {submissionOutput.status === "Accepted" ? <Link href={`/add-solution?id=${submissionOutput._id}`}><Button className='bg-green-500 text-white font-semibold cursor-pointer hover:bg-green-600 duration-300'><SquarePen className='resize-custom w-4 h-4' /> Solution</Button></Link>:
                     <Button onClick={handleSubmissionClose} className='bg-red-500 text-white font-semibold  cursor-pointer hover:bg-red-600 duration-300'><X className='resize-custom w-5 h-5' /> Close</Button>
                 }
                 </div>

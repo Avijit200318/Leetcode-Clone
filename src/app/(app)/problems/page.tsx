@@ -106,7 +106,7 @@ export default function page() {
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
           console.log("Problem while fetching user info: ", error.response.data.message);
-          toast.error(error.response.data.message);
+          toast.error(error.response.data.message || "Problem while fetching user info");
         } else {
           console.error("Error while fetching user info: ", error);
           toast.error("Error while fetching user info");

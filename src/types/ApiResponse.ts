@@ -1,5 +1,6 @@
 import { IProblem } from "@/models/Problem";
 import { ISolution } from "@/models/Solution";
+import { ISubmission } from "@/models/Submission";
 import { IUser } from "@/models/User";
 import mongoose, { mongo } from "mongoose";
 
@@ -18,6 +19,7 @@ export interface Judge0SubmissionResult {
 }
 
 export interface codeSubmissionResultType {
+    _id?: string | mongoose.Types.ObjectId,
     userId: string | mongoose.Types.ObjectId,
     status: string,
     language: string,
@@ -43,5 +45,6 @@ export interface ApiResponse {
     solution?: ISolution,
     allProblems?: IProblem[],
     results?: Judge0SubmissionResult[],
-    output?: string
+    output?: string,
+    submissionDetails?: ISubmission
 }

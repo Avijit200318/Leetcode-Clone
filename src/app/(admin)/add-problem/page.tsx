@@ -70,7 +70,7 @@ export default function page() {
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         console.log("Add problem route error: ", error.response.data.message);
-        toast.error(error.response.data.message);
+        toast.error(error.response.data.message || "Something went wrong");
       } else {
         console.log("Error while coding problem creation: ", error);
         toast.error("Error while coding problem creation ");

@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // protected route
-  if (!token && (url.pathname.startsWith("/dashboard") || url.pathname.startsWith("/add-problem"))) {
+  if (!token && (url.pathname.startsWith("/dashboard") || url.pathname.startsWith("/add-problem") || url.pathname.startsWith("/add-solution"))) {
     return NextResponse.redirect(new URL('/sign-in', request.url));
   }
 
@@ -32,6 +32,7 @@ export const config = {
     '/verify/:path*',
     '/problems/:path*',
     '/forget-password/:path*',
-    '/add-problem/:path*'
+    '/add-problem/:path*',
+    '/add-solution/:path*'
   ]
 }

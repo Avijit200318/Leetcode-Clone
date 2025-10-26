@@ -61,6 +61,7 @@ export default function page() {
 
 
   const onSubmit = async (data: z.infer<typeof createProblemValidation>) => {
+    setIsSubmitting(true);
     try {
       const res = await axios.post<ApiResponse>("/api/problem/add-problem", data);
 
@@ -257,14 +258,6 @@ export default function page() {
           </Form>
         </div>
       </ScrollArea>
-      {/* <MDEditor
-        value={description}
-        onChange={(value) => setDescription(value || "")}
-        height={"calc(100vh-3rem)"}
-        preview='edit'
-        hideToolbar={true}
-        className='py-1 pl-6 w-1/2'
-      /> */}
       <ScrollArea className='relative w-1/2 h-[calc(100vh-3rem)] border-l-2 py-4'>
         <>
           <h2 className="mb-2 pl-3 font-semibold text-lg">Description View</h2>

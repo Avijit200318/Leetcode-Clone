@@ -1,4 +1,5 @@
 import { IProblem } from "@/models/Problem";
+import { ISolution } from "@/models/Solution";
 import { IUser } from "@/models/User";
 import mongoose, { mongo } from "mongoose";
 
@@ -39,6 +40,7 @@ export interface ApiResponse {
     submissionOutput?: codeSubmissionResultType,
     problemId?: string | mongoose.Types.ObjectId,
     problem?: IProblem,
+    solution?: ISolution,
     allProblems?: IProblem[],
     results?: Judge0SubmissionResult[],
     output?: string

@@ -663,3 +663,71 @@ The response will be a JSON object with the following fields:
   }
 }
 ```
+## Endpoint: `/api/solution/add-solution`
+
+### Description
+This endpoint allows an **authenticated user** to **submit a solution** for a given problem. It validates the solution data, saves it in the database, and links it to the user’s profile.
+
+### Method
+`POST`
+
+### Authentication
+- Requires a valid **JWT token** obtained from NextAuth.
+- Token is verified using `getToken` and `process.env.NEXTAUTH_SECRET`.
+
+### Request Body
+Send a JSON object with the following fields:
+
+- `problemId` (string – MongoDB ObjectId): The ID of the problem being solved (**required**)  
+- `title` (string): Title of the solution (**required**)  
+- `tags` (array of strings): Tags or topics related to the solution (**required**)  
+- `explanation` (string): Explanation of the approach used (**required**)  
+- `sourceCode` (string): The complete source code of the solution (**required**)  
+
+> The request body is validated using the `solutionValidation` schema.  
+> If validation fails, an appropriate error message is returned.
+
+#### Example Request
+```json
+{
+  "problemId": "6510d8b26b3c97b12c7df456",
+  "title": "Two Sum Solution",
+  "tags": ["Array", "Hash Table"],
+  "explanation": "We ...",
+  "sourceCode": "function twoSum(nums, target) ..."
+}
+```
+### Example Response
+
+The response will be a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful (`true`) or not (`false`).  
+- `message` (string): Provides additional information about the operation result (e.g., success message or error description).  
+- `solution` (object): The newly created solution document containing the following fields:
+  - `_id` (string – MongoDB ObjectId): Unique ID of the solution  
+  - `userId` (string – MongoDB ObjectId): ID of the user who submitted the solution  
+  - `problemId` (string – MongoDB ObjectId): ID of the related problem  
+  - `title` (string): Title of the submitted solution  
+  - `tags` (array of strings): Tags or topics related to the solution  
+  - `explanation` (string): Description or reasoning behind the solution  
+  - `sourceCode` (string): The submitted source code  
+  - `createdAt` (string – ISO date): Timestamp when the solution was created  
+  - `updatedAt` (string – ISO date): Timestamp when the solution was last updated  
+
+#### Example Success Response
+```json
+{
+  "success": true,
+  "message": "Solution submitted successfully",
+  "solution": {
+    "_id": "6523f8c86b3c97b12c7df789",
+    "userId": "650f4c8e2b3c97b12c7df123",
+    "problemId": "6510d8b26b3c97b12c7df456",
+    "title": "Two Sum Solution",
+    "tags": ["Array", "Hash Table"],
+    "explanation": "We...",
+    "sourceCode": "function twoSum(nums, target) ...",
+    "createdAt": "2025-10-26T08:30:00.000Z",
+    "updatedAt": "2025-10-26T08:30:00.000Z"
+  }
+}

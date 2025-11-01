@@ -43,7 +43,7 @@ export default function page() {
       problemId: "",
       title: "",
       tags: [""],
-      explanation: `### Explanation:\n\n> Describe your first thoughts on how to solve this problem.\n\n### Intuition\n\n> Describe your approach to solving the problem.\n\n### Approach\n\n> Add your time complexity here, e.g. $$O(n)$$ \n\n### Complexity\n\n- Time complexity:\n\n> Add your time complexity here, e.g. $$O(n)$$\n\n- Space complexity:\n\n> Add your space complexity here, e.g. $$O(n)$$\n\n\n\n<br>\n\n### Code\n\n\`\`\`\n${""}\n\`\`\``,
+      explanation: `### Explanation:\n\n> Describe your first thoughts on how to solve this problem.\n\n### Intuition\n\n> Describe your approach to solving the problem.\n\n### Approach\n\n> Add your time complexity here, e.g. $$O(n)$$ \n\n### Complexity\n\n- #### Time complexity:\n\n- - > Add your time complexity here, e.g. $$O(n)$$\n\n- #### Space complexity:\n\n- - > Add your space complexity here, e.g. $$O(n)$$\n\n\n\n<br>\n\n### Code\n\n\`\`\`\n${""}\n\`\`\``,
       sourceCode: "",
     }
   });
@@ -73,8 +73,7 @@ export default function page() {
     }
   }
 
-  const allValues = form.watch()
-  console.log(allValues)
+  // const allValues = form.watch()
   const allTags = form.watch("tags");
   const explanationValue = form.watch("explanation");
 
@@ -92,7 +91,7 @@ export default function page() {
         problemId: ((res.data.submissionDetails as ISubmission).problemId as Types.ObjectId).toString(),
         title: "",
         tags: [""],
-        explanation: `### Explanation:\n\n> Describe your first thoughts on how to solve this problem.\n\n### Intuition\n\n> Describe your approach to solving the problem.\n\n### Approach\n\n> Add your time complexity here, e.g. $$O(n)$$ \n\n### Complexity\n\n- Time complexity:\n\n> Add your time complexity here, e.g. $$O(n)$$\n\n- Space complexity:\n\n> Add your space complexity here, e.g. $$O(n)$$\n\n\n\n<br>\n\n### Code\n\n\`\`\`\n${res.data.submissionDetails?.sourceCode || ""}\n\`\`\``,
+        explanation: `### Explanation:\n\n> Describe your first thoughts on how to solve this problem.\n\n### Intuition\n\n> Describe your approach to solving the problem.\n\n### Approach\n\n> Add your time complexity here, e.g. $$O(n)$$ \n\n### Complexity\n\n- #### Time complexity:\n\n- - > Add your time complexity here, e.g. $$O(n)$$\n\n- #### Space complexity:\n\n- - > Add your space complexity here, e.g. $$O(n)$$\n\n\n\n<br>\n\n### Code\n\n\`\`\`\n${res.data.submissionDetails?.sourceCode || ""}\n\`\`\``,
         sourceCode: res.data.submissionDetails?.sourceCode || "",
       });
 
@@ -185,7 +184,7 @@ export default function page() {
                         height={"100%"}
                         preview='edit'
                         hideToolbar={true}
-                        className='p-2 w-full'
+                        className='p-2 w-full customTextWhite'
                       />
                       <FormMessage />
                     </FormItem>
@@ -193,7 +192,7 @@ export default function page() {
                 />
               </ScrollArea>
               <ScrollArea className="w-1/2 h-full rounded-md">
-                <MDEditor.Markdown source={explanationValue} className='markdown-body min-h-full p-4' />
+                <MDEditor.Markdown source={explanationValue} className='markdown-body customTextWhite min-h-full p-4' />
               </ScrollArea>
             </div>
           </form>

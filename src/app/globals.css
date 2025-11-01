@@ -147,6 +147,10 @@
   background: transparent !important;
 }
 
+.customTextWhite{
+  color: white !important;
+}
+
 @layer base {
   :root {
     --chart-1: oklch(0.646 0.222 41.116);

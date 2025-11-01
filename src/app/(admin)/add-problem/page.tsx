@@ -261,15 +261,15 @@ export default function page() {
       <ScrollArea className='relative w-1/2 h-[calc(100vh-3rem)] border-l-2 py-4'>
         <>
           <h2 className="mb-2 pl-3 font-semibold text-lg">Description View</h2>
-          <MDEditor.Markdown source={descriptionValue} className='markdown-body py-4 px-4 mb-6' />
+          <MDEditor.Markdown source={descriptionValue} className='markdown-body customTextWhite py-4 px-4 mb-6' />
         </>
         <>
           <h2 className="mb-2 pl-3 font-semibold text-lg">Examples View</h2>
-          <MDEditor.Markdown source={examplesValue} className='markdown-body py-4 px-4 mb-6' />
+          <MDEditor.Markdown source={examplesValue} className='markdown-body customTextWhite py-4 px-4 mb-6' />
         </>
         <>
           <h2 className="mb-2 pl-3 font-semibold text-lg">Constraints View</h2>
-          <MDEditor.Markdown source={constraintsValue} className='markdown-body py-4 px-4' />
+          <MDEditor.Markdown source={constraintsValue} className='markdown-body customTextWhite py-4 px-4' />
         </>
       </ScrollArea>
     </div>

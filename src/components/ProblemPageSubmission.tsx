@@ -68,6 +68,12 @@ export default function ProblemPageSubmission({ theme, problemInfo, setCurrentTa
         </div>
         </div>}
 
+      {(submission && !loading && submission.length === 0) && 
+        <div className="w-full h-[calc(100vh-13rem)] flex items-center">
+          <h2 className="text-lg text-center w-[90%] text-gray-500">No Submission to Show. Run and submit your code first to see the <span className="text-green-500">results</span> and <span className="text-green-500">complexity analysis</span> here.</h2>
+        </div>
+      }
+
       {submission && !loading && submission.map((ele, index) =>
         <div key={index} onClick={()=> handleClick(ele)} className="w-full flex items-center justify-between py-1 border-b border-t cursor-pointer px-2">
           <p className=''>{index + 1}</p>

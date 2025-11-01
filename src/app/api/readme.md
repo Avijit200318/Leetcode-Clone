@@ -791,26 +791,31 @@ The response will be a JSON object with the following fields:
   }
 }
 ```
-## Endpoint: `/api/solution/get-solutions`
+## Endpoint: `/api/solution/get-solutions?problemId=6510d8b26b3c97b12c7df456`
 
 ### Description
-This endpoint retrieves **all submitted solutions** for a specific problem based on its `problemId`.  
-It validates the provided problem ID, ensures it is a valid MongoDB ObjectId, and fetches all matching solutions from the database.
+Fetches **all submitted solutions** for a specific problem using its `problemId`.  
+Each solution is populated with user details via the `userId` reference field.  
+This endpoint is useful for displaying a list of all users’ solutions for a given coding problem.
+
+---
 
 ### Method
 `GET`
 
-### Query Parameters
+---
 
-Send the `problemId` as a **query parameter** in the request URL.
+### Query Parameters
 
 | Parameter | Type | Required | Description |
 |------------|------|-----------|-------------|
-| `problemId` | `string` (MongoDB ObjectId) | ✅ | The unique ID of the problem whose solutions you want to fetch. |
+| `problemId` | `string` (MongoDB ObjectId) | ✅ | The unique ID of the problem for which you want to retrieve all solutions. |
 
-#### Example Request
+---
+
+### Example Request
 ```
-GET /api/solution/get-all-solutions?problemId=6510d8b26b3c97b12c7df456
+GET /api/solution/get-solutions?problemId=6510d8b26b3c97b12c7df456
 ```
 
 ### Example Response
@@ -824,7 +829,11 @@ The response will be a JSON object with the following fields:
 Each solution object contains:
 
 - `_id` (string – MongoDB ObjectId): Unique ID of the solution.  
-- `userId` (string – MongoDB ObjectId): ID of the user who submitted the solution.  
+- `userId` (object): Contains user details of the person who submitted the solution.  
+  - `_id` (string – MongoDB ObjectId): Unique ID of the user.  
+  - `username` (string): The username of the user.  
+  - `email` (string): The email address of the user.  
+  - `avatar` (string): URL to the user’s profile picture.  
 - `problemId` (string – MongoDB ObjectId): ID of the associated problem.  
 - `title` (string): Title of the solution.  
 - `tags` (array): List of relevant tags or topics related to the solution.  
@@ -840,13 +849,18 @@ Each solution object contains:
   "message": "All solutions are fetched successfully",
   "solutions": [
     {
-      "_id": "6523f8c86b3c97b12c7df7..",
-      "userId": "650f4c8e2b3c97b12c7df1..",
-      "problemId": "6510d8b26b3c97b12c7df4..",
+      "_id": "6523f8c86b3c97b12c7df7ab",
+      "userId": {
+        "_id": "650f4c8e2b3c97b12c7df1cd",
+        "username": "Avijit Hira",
+        "email": "avijit@example.com",
+        "avatar": "https://example.com/avatar.jpg"
+      },
+      "problemId": "6510d8b26b3c97b12c7df4ef",
       "title": "Two Sum Solution using HashMap",
       "tags": ["JavaScript", "HashMap", "Array"],
-      "explanation": "## Approach\nWe use a hash map to store ...",
-      "sourceCode": "function twoSum(nums, target) ...",
+      "explanation": "## Approach\nWe...",
+      "sourceCode": "function twoSum(nums, target)...",
       "createdAt": "2025-10-26T08:30:00.000Z",
       "updatedAt": "2025-10-26T08:30:00.000Z"
     }

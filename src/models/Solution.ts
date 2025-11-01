@@ -1,7 +1,8 @@
 import { Document, model, models, Schema, Types } from "mongoose";
+import { IUser } from "./User";
 
 export interface ISolution extends Document {
-  userId: Types.ObjectId,
+  userId: Types.ObjectId | IUser,
   problemId: Types.ObjectId,
   tags: string[],
   title: string,

@@ -71,7 +71,7 @@ export default function ProblemPageDescription({ problemInfo, session }: { probl
                 <div className="flex gap-1 items-center text-sm px-2.5 py-1 rounded-full bg-[var(--sidebar-accent)] text-orange-400"><Lock className='resize-custom w-4' /> Companies</div>
             </div>
             <div className="text w-full mt-4 ">
-                <MDEditor.Markdown source={(problemInfo.description + problemInfo.examples + problemInfo.constraints)} className="markdown-body w-full" style={{ background: "var(--card)" }} />
+                <MDEditor.Markdown source={(problemInfo.description + problemInfo.examples + problemInfo.constraints)} className="markdown-body customTextWhite w-full" style={{ background: "var(--card)" }} />
             </div>
 
             <ProblemPageCollapseButton problemInfo={problemInfo} />

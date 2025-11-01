@@ -58,7 +58,7 @@ export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme
     return (
         <div style={{ background: "var(--card)" }} className='w-full min-h-[calc(100vh-6.5rem)] flex flex-col p-4 pb-12 relative'>
             {(!codeOutput && !isCodeRunning) && <div className='absolute top-0 left-0 w-full h-full flex justify-center items-center'>
-                <h2 className='text-lg'>You must run your code first</h2>
+                <h2 className='text-lg text-gray-500'>You must <span className="text-green-500">run</span> your code first</h2>
             </div>}
             {isCodeRunning &&
                 <div className="absolute w-full h-[calc(100vh-6.5rem)] top-0 left-0 px-4 py-2">
@@ -147,7 +147,7 @@ export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme
                 <div className="w-full border rounded-md overflow-hidden mb-8">
                     <MDEditor.Markdown
                     source={`\`\`\`\n${submissionOutput.sourceCode}\n\`\`\``}
-                    className="markdown-body w-full" style={{ background: "var(--card)"}}  />
+                    className="markdown-body customTextWhite w-full" style={{ background: "var(--card)"}}  />
                 </div>
             </div>
             }

@@ -1,4 +1,5 @@
 import { connectToDb } from "@/lib/dbConnect";
+import problemModel from "@/models/Problem";
 import solutionModel from "@/models/Solution";
 import userModel from "@/models/User";
 import { solutionValidation } from "@/schemas/solutiionSchema";
@@ -37,6 +38,15 @@ export async function POST(req: NextRequest) {
             }, { status: 404 })
         }
 
+        const existedProblem = await problemModel.findById(problemId);
+
+        if(!existedProblem){
+            return NextResponse.json({
+                success: false,
+                message: "Problem not found"
+            }, { status: 404 })
+        }
+
         const newSolution = await solutionModel.create({
             userId: token._id,
             problemId,
@@ -56,6 +66,8 @@ export async function POST(req: NextRequest) {
 
         existingUser.solutions.push(newSolution._id);
         await existingUser.save();
+        existedProblem.solutions.push(newSolution._id);
+        await existedProblem.save();
 
         return NextResponse.json({
             success: true,

@@ -89,7 +89,7 @@ export default function page() {
       setSubmission(res.data.submissionDetails as ISubmission);
 
       form.reset({
-        problemId: ((res.data.submissionDetails as ISubmission)._id as Types.ObjectId).toString(),
+        problemId: ((res.data.submissionDetails as ISubmission).problemId as Types.ObjectId).toString(),
         title: "",
         tags: [""],
         explanation: `### Explanation:\n\n> Describe your first thoughts on how to solve this problem.\n\n### Intuition\n\n> Describe your approach to solving the problem.\n\n### Approach\n\n> Add your time complexity here, e.g. $$O(n)$$ \n\n### Complexity\n\n- Time complexity:\n\n> Add your time complexity here, e.g. $$O(n)$$\n\n- Space complexity:\n\n> Add your space complexity here, e.g. $$O(n)$$\n\n\n\n<br>\n\n### Code\n\n\`\`\`\n${res.data.submissionDetails?.sourceCode || ""}\n\`\`\``,

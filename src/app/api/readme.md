@@ -533,7 +533,7 @@ The response will be a JSON object with the following fields:
 
 - `success` (boolean): Indicates whether the request was successful (`true`) or not (`false`).  
 - `message` (string): Provides additional information about the result.  
-- `solutions` (array): List of submission objects for the problem, each containing:
+- `submissions` (array): List of submission objects for the problem, each containing:
   - `_id` (string – MongoDB ObjectId): Submission ID  
   - `problemId` (string – MongoDB ObjectId): Associated problem ID  
   - `userId` (string – MongoDB ObjectId): ID of the user who submitted the code  
@@ -550,7 +550,7 @@ The response will be a JSON object with the following fields:
 {
   "success": true,
   "message": "Submission fetched successfully",
-  "solutions": [
+  "submissions": [
     {
       "_id": "6523f...",
       "problemId": "6510d8b2...",
@@ -666,7 +666,7 @@ The response will be a JSON object with the following fields:
 ## Endpoint: `/api/solution/add-solution`
 
 ### Description
-This endpoint allows an **authenticated user** to **submit a solution** for a given problem. It validates the solution data, saves it in the database, and links it to the user’s profile.
+This endpoint allows an **authenticated user** to **submit a solution** for a given problem. It validates the solution data, saves it in the database, and links it to the user’s profile also problem database.
 
 ### Method
 `POST`
@@ -789,5 +789,67 @@ The response will be a JSON object with the following fields:
     "createdAt": "2025-10-26T08:30:00.000Z",
     "updatedAt": "2025-10-26T08:30:00.000Z"
   }
+}
+```
+## Endpoint: `/api/solution/get-solutions`
+
+### Description
+This endpoint retrieves **all submitted solutions** for a specific problem based on its `problemId`.  
+It validates the provided problem ID, ensures it is a valid MongoDB ObjectId, and fetches all matching solutions from the database.
+
+### Method
+`GET`
+
+### Query Parameters
+
+Send the `problemId` as a **query parameter** in the request URL.
+
+| Parameter | Type | Required | Description |
+|------------|------|-----------|-------------|
+| `problemId` | `string` (MongoDB ObjectId) | ✅ | The unique ID of the problem whose solutions you want to fetch. |
+
+#### Example Request
+```
+GET /api/solution/get-all-solutions?problemId=6510d8b26b3c97b12c7df456
+```
+
+### Example Response
+
+The response will be a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful (`true`) or not (`false`).  
+- `message` (string): Provides additional information about the result.  
+- `solutions` (array): A list of solution objects, each containing details about a specific user’s solution.
+
+Each solution object contains:
+
+- `_id` (string – MongoDB ObjectId): Unique ID of the solution.  
+- `userId` (string – MongoDB ObjectId): ID of the user who submitted the solution.  
+- `problemId` (string – MongoDB ObjectId): ID of the associated problem.  
+- `title` (string): Title of the solution.  
+- `tags` (array): List of relevant tags or topics related to the solution.  
+- `explanation` (string): Markdown-formatted explanation or notes about the solution.  
+- `sourceCode` (string): The actual code of the solution.  
+- `createdAt` (string – ISO date): Timestamp of when the solution was created.  
+- `updatedAt` (string – ISO date): Timestamp of the last update.
+
+#### Example Success Response
+```json
+{
+  "success": true,
+  "message": "All solutions are fetched successfully",
+  "solutions": [
+    {
+      "_id": "6523f8c86b3c97b12c7df7..",
+      "userId": "650f4c8e2b3c97b12c7df1..",
+      "problemId": "6510d8b26b3c97b12c7df4..",
+      "title": "Two Sum Solution using HashMap",
+      "tags": ["JavaScript", "HashMap", "Array"],
+      "explanation": "## Approach\nWe use a hash map to store ...",
+      "sourceCode": "function twoSum(nums, target) ...",
+      "createdAt": "2025-10-26T08:30:00.000Z",
+      "updatedAt": "2025-10-26T08:30:00.000Z"
+    }
+  ]
 }
 ```

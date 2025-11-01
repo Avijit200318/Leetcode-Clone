@@ -70,7 +70,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({
             success: true,
             message: "Submission fetched successfully",
-            solutions: submittedCodes[0]?.submissionDetails || []
+            submissions: submittedCodes[0]?.submissionDetails || []
         });
     } catch (error) {
         console.error("Something went wrong while fetching submissions for this problem: ", error);

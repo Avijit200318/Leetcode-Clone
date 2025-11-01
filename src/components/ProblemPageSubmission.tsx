@@ -24,7 +24,7 @@ export default function ProblemPageSubmission({ theme, problemInfo, setCurrentTa
       try {
         const res = await axios.get<ApiResponse>(`/api/problem/get-submitted-code?problemId=${problemInfo._id}`);
 
-        setSubmission(res.data.solutions as codeSubmissionResultType[]);
+        setSubmission(res.data.submissions as codeSubmissionResultType[]);
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
           toast.error(error.response.data.message);

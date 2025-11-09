@@ -215,7 +215,7 @@ export default function page() {
           <div className="flex items-center gap-4">
             <div className="w-[20rem] rounded-full overflow-hidden flex gap-1 items-center px-4 bg-input">
               <Search className='resize-custom w-5 text-gray-400' />
-              <Input onChange={handleSearch} style={{ background: "transparent !important" }} placeholder='Search questions' className='border-none outline-none focus-visible:ring-[0px]' value={searchQuery} />
+              <Input onChange={handleSearch} placeholder='Search questions' className='customTransparent border-none outline-none focus-visible:ring-[0px]' value={searchQuery} />
             </div>
             <Button onClick={handleReverseArray} variant="outline" className='rounded-full w-9 h-9 cursor-pointer'><ArrowDownUp className='resize-custom w-4 text-gray-400' /></Button>
             <DropdownMenu>

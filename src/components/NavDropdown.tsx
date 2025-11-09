@@ -35,7 +35,7 @@ export default function NavDropdown({ session, signOut, theme }: NavDropdownProp
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-[18rem]" align="center">
                     <DropdownMenuLabel>
-                        <Link href="/dashboard">
+                        <Link href={`/dashboard/${session?.user._id}`}>
                             <div className="flex items-center gap-4 my-2">
                                 <div className="w-16 h-16 rounded-full overflow-hidden border">
                                     <img src={session?.user.avatar} alt="" className="w-full h-full object-cover" />

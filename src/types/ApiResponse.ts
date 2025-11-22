@@ -26,7 +26,7 @@ export interface codeSubmissionResultType {
     time: number,
     memory: number,
     sourceCode: string,
-    problemId: string | mongoose.Types.ObjectId,
+    problemId: string | mongoose.Types.ObjectId | IProblem,
     createdAt?: Date,
     udpatedAt?: Date
 }

@@ -5,8 +5,13 @@ import { ArrowRight, ChevronRight, ClipboardList, FileText, MessageCircleMore, S
 import CustomContributorGraph from './CustomContributorGraph'
 import { LevelWiseProblemType } from '@/app/(app)/problems/page'
 import CustomRadialChart from './CustomRadialChart'
+import { codeSubmissionResultType } from '@/types/ApiResponse'
+import { formatDate } from '@/helpers/formatDate'
+import { IProblem } from '@/models/Problem'
+import { timeAgoFunction } from '@/helpers/timeAgoFunction'
 
-export default function ProfilePageRightSection({ levelWiseSolvedQuestions, allQuestioinsLevelWise }: { levelWiseSolvedQuestions: LevelWiseProblemType, allQuestioinsLevelWise: LevelWiseProblemType }) {
+export default function ProfilePageRightSection({ levelWiseSolvedQuestions, allQuestioinsLevelWise, allSubmissions }: { levelWiseSolvedQuestions: LevelWiseProblemType, allQuestioinsLevelWise: LevelWiseProblemType, allSubmissions: codeSubmissionResultType[]}) {
+  console.log(allSubmissions)
 
   return (
     <div className="w-[60%] h-full rounded-lg flex flex-col gap-4">
@@ -64,7 +69,7 @@ export default function ProfilePageRightSection({ levelWiseSolvedQuestions, allQ
       <div className="customBackground flex w-full h-60 rounded-md py-4">
         <CustomContributorGraph />
       </div>
-      <div className="customBackground flex flex-col w-full h-[45.5rem] rounded-md">
+      <div className="customBackground flex flex-col w-full h-[34.5rem] rounded-md">
         <div className="w-full h-20 flex justify-between items-center gap-3 px-4">
           <div className="flex items-center gap-2 text-gray-300">
             <div className="flex items-center gap-3 px-6 py-3 rounded cursor-pointer bg-[var(--sidebar-accent)]">
@@ -91,22 +96,12 @@ export default function ProfilePageRightSection({ levelWiseSolvedQuestions, allQ
         </div>
 
         <div className="w-full h-[calc(100%-5rem)] px-4 mt-2">
-          <div className="w-full flex items-center justify-between px-4 py-4 rounded cursor-pointer bg-[var(--sidebar-accent)]">
-            <h2 className="font-semibold">Two Sum problem</h2>
-            <p className="text-gray-500">2 days ago</p>
+          {[...allSubmissions].reverse().slice(0, 9).map((ele, index) => 
+          <div key={index} className={`w-full flex items-center justify-between px-4 py-4 rounded cursor-pointer ${index % 2 == 0? 'bg-[var(--sidebar-accent)]' : ''}`}>
+            <h2 className="font-semibold">{(ele.problemId as IProblem).title}</h2>
+            <p className="text-gray-500 text-sm font-semibold">{timeAgoFunction(ele.createdAt as Date)}</p>
           </div>
-          <div className="w-full flex items-center justify-between px-4 py-4 rounded cursor-pointer">
-            <h2 className="font-semibold">Two Sum problem</h2>
-            <p className="text-gray-500">2 days ago</p>
-          </div>
-          <div className="w-full flex items-center justify-between px-4 py-4 rounded cursor-pointer bg-[var(--sidebar-accent)]">
-            <h2 className="font-semibold">Two Sum problem</h2>
-            <p className="text-gray-500">2 days ago</p>
-          </div>
-          <div className="w-full flex items-center justify-between px-4 py-4 rounded cursor-pointer">
-            <h2 className="font-semibold">Two Sum problem</h2>
-            <p className="text-gray-500">2 days ago</p>
-          </div>
+          )}
         </div>
       </div>
     </div>

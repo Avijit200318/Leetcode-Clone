@@ -3,8 +3,16 @@ import { mongodbObjectId } from "@/schemas/similarQuestionSchema";
 import { NextRequest, NextResponse } from "next/server";
 import submissionModel from "@/models/Submission";
 import "@/models/Problem";
+import { getToken } from "next-auth/jwt";
 
 export async function POST(req: NextRequest, res: NextResponse) {
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    if (!token) {
+        return NextResponse.json({
+            success: false,
+            message: "Unauthorized"
+        }, { status: 400 });
+    }
     await connectToDb();
 
     try {
@@ -26,7 +34,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
         const allSubmissions = await submissionModel.find({
             userId
-        }).populate({path: "problemId", select: ""});
+        }).populate({ path: "problemId", select: "" });
 
         return NextResponse.json({
             success: true,

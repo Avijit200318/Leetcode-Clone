@@ -3,12 +3,23 @@ import { Button } from '@/components/ui/button'
 import { Eye, FolderCheck, GraduationCap, MapPin, MessageCircle, Star, Tag } from 'lucide-react'
 import { IUser } from '@/models/User'
 import { LevelWiseProblemType } from '@/app/(app)/problems/page'
+import { FilteredLanguageType } from '@/app/(app)/dashboard/[userId]/page'
 
-export default function ProfilePageLeftSecond({fullUserInfo}: {fullUserInfo: IUser | null}) {
+const languageName = {
+    "cpp": "C++",
+    "c": "C",
+    "py": "Python",
+    "js": "Javascript",
+    "java": "Java"
+}
+
+type languageNameType = keyof typeof languageName
+
+export default function ProfilePageLeftSecond({ fullUserInfo, filterLanguageWiseSubmission }: { fullUserInfo: IUser | null, filterLanguageWiseSubmission: FilteredLanguageType }) {
     return (
         <div className="customBackground w-[20%] h-full  rounded-lg px-3 py-4">
             <div className="flex items-center gap-4 w-full">
-                <img src={fullUserInfo?.avatar} alt="" className='w-22 h-22 rounded-full bg-blue-500' />
+                <img src={fullUserInfo?.avatar} alt="" className='w-22 h-22 rounded-full bg-blue-500 object-cover border-2 border-white' />
                 <div className="">
                     <h1 className="font-semibold text-lg">{fullUserInfo?.username}</h1>
                     <h2 className="text-sm">{fullUserInfo?.username}</h2>
@@ -79,18 +90,12 @@ export default function ProfilePageLeftSecond({fullUserInfo}: {fullUserInfo: IUs
             <div className="flex flex-col gap-3 border-t pt-2">
                 <h1 className="font-semibold mb-3">Languages</h1>
                 <div className="flex flex-col gap-3">
-                    <div className="flex w-full justify-between items-center">
-                        <h3 className="px-4 py-0.5 rounded-full bg-[var(--sidebar-accent)] text-sm text-gray-400">C++</h3>
-                        <h3 className="text-sm text-gray-400 mr-2"><span className="font-semibold text-white">210</span> problems solved</h3>
+                    {Object.entries(filterLanguageWiseSubmission).filter(([first, second]) => second > 0).map(([first, second], index) =>
+                    <div key={index} className="flex w-full justify-between items-center">
+                        <h3 className="px-4 py-0.5 rounded-full bg-[var(--sidebar-accent)] text-sm text-gray-400">{languageName[first as languageNameType]}</h3>
+                        <h3 className="text-sm text-gray-400 mr-2"><span className="font-semibold text-white">{second}</span> problems solved</h3>
                     </div>
-                    <div className="flex w-full justify-between items-center">
-                        <h3 className="px-4 py-0.5 rounded-full bg-[var(--sidebar-accent)] text-sm text-gray-400">Python</h3>
-                        <h3 className="text-sm text-gray-400 mr-2"><span className="font-semibold text-white">210</span> problems solved</h3>
-                    </div>
-                    <div className="flex w-full justify-between items-center">
-                        <h3 className="px-4 py-0.5 rounded-full bg-[var(--sidebar-accent)] text-sm text-gray-400">Javascript</h3>
-                        <h3 className="text-sm text-gray-400 mr-2"><span className="font-semibold text-white">210</span> problems solved</h3>
-                    </div>
+                    )}
                 </div>
                 <div className="flex flex-col gap-3 border-t pt-2">
                     <h1 className="font-semibold mb-3">Skills</h1>

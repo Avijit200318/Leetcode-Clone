@@ -867,3 +867,82 @@ Each solution object contains:
   ]
 }
 ```
+## Endpoint: `/api/code/get-user-allsubmissions`
+
+### Description
+Fetches **all submissions made by a specific user** using their `userId`.  
+Each submission is populated with its associated problem details using the `problemId` reference.  
+Use this endpoint to display all attempts or solutions submitted by a user.
+
+---
+
+### Method  
+`POST`
+
+---
+
+### Request Body
+
+| Field   | Type                    | Required | Description |
+|---------|--------------------------|----------|-------------|
+| userId  | string (MongoDB ObjectId) | ✅        | The ID of the user whose submissions should be fetched. |
+
+---
+
+### Example Request
+```http
+{
+  "userId": "650f4c8e2b3c97b12c7df1cd"
+}
+```
+### Example Response
+
+The response will be a JSON object with the following fields:
+
+- **success** (boolean): Whether the request was successful.  
+- **message** (string): Additional information about the response.  
+- **submissions** (array): A list of submission objects.
+
+---
+
+### Submission Object Structure
+
+Each submission object contains:
+
+- **_id** (string – MongoDB ObjectId): Unique ID of the submission.  
+- **userId** (string – MongoDB ObjectId): ID of the user who made the submission.  
+- **problemId** (object – populated): The associated problem details.  
+  - **_id** (string – MongoDB ObjectId)  
+  - **title** (string)  
+  - **difficulty** (string, optional)  
+  - **tags** (array, optional)  
+- **language** (string): Language used in the submission (if stored).  
+- **sourceCode** (string): Submitted solution code.  
+- **status** (string): Status of the submission (e.g., `Accepted`).  
+- **createdAt** (string – ISO timestamp)  
+- **updatedAt** (string – ISO timestamp)
+
+### Example Success Response
+```json
+{
+  "success": true,
+  "message": "All submission are fetched successfully",
+  "submissions": [
+    {
+      "_id": "6530fb826b3c97b12c7df8c3",
+      "userId": "650f4c8e2b3c97b12c7df1cd",
+      "problemId": {
+        "_id": "6510d8b26b3c97b12c7df456",
+        "title": "Two Sum",
+        "difficulty": "Easy",
+        "tags": ["Array", "HashMap"]
+      },
+      "language": "JavaScript",
+      "sourceCode": "function twoSum(nums, target) {...}",
+      "status": "Accepted",
+      "createdAt": "2025-10-26T10:22:00.000Z",
+      "updatedAt": "2025-10-26T10:22:00.000Z"
+    }
+  ]
+}
+```

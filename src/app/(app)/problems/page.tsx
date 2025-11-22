@@ -39,7 +39,7 @@ export default function page() {
     medium: 0,
     hard: 0
   })
-  const [userTotalLevelProblem, setUserEachLevelProblem] = useState<LevelWiseProblemType>({
+  const [userTotalLevelProblem, setUserTotalLevelProblem] = useState<LevelWiseProblemType>({
     easy: 0,
     medium: 0,
     hard: 0
@@ -99,7 +99,7 @@ export default function page() {
         if (!res.data.success) return;
         const data = levelWiseProblemSeperate(res.data.user?.solvedQuestions as IProblem[]);
 
-        setUserEachLevelProblem({
+        setUserTotalLevelProblem({
           easy: data.e, medium: data.m, hard: data.h
         });
 

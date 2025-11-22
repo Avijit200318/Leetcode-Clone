@@ -38,7 +38,7 @@ export default function ProfilePageLInearChart() {
     <Card className='w-full h-full border-none py-4 gap-3'>
       <CardHeader className='absoute top-0 left-0'>
         <CardDescription className='font-semibold text-lg'>Contest Rating</CardDescription>
-        <CardTitle className='text-2xl'>1,369</CardTitle>
+        <CardTitle className='text-2xl font-normal'>1,369</CardTitle>
       </CardHeader>
       <CardContent className='w-full h-full'>
         <ChartContainer config={chartConfig} className='w-full h-[60%]'>

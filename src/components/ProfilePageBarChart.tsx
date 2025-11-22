@@ -47,7 +47,7 @@ export default function ProblemPageBarChart() {
         <Card className="w-full h-full py-4 border-none">
             <CardHeader className='absoute top-0 left-0 gap-1'>
                 <CardDescription className='font-semibold text-lg'>Top</CardDescription>
-                <CardTitle className='text-2xl'>93.97%</CardTitle>
+                <CardTitle className='text-2xl font-normal'>93.97%</CardTitle>
             </CardHeader>
             <CardContent className="w-full h-full px-1">
                 <ChartContainer config={chartConfig} className="w-full h-[60%]">

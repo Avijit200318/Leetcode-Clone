@@ -1,5 +1,7 @@
 import mongoose, {Document, model, models, Schema, Types} from "mongoose";
 import { IProblem } from "./Problem";
+// linkdin
+// skills
 
 export interface IUser extends Document{
     username: string,

@@ -125,7 +125,7 @@ export default function page() {
 
   return (
     <div className='flex justify-center gap-8 w-full py-8'>
-      <ProfilePageLeftSection fullUserInfo={fullUserInfo} filterLanguageWiseSubmission={filterLanguageWiseSubmission} />
+      <ProfilePageLeftSection fullUserInfo={fullUserInfo} filterLanguageWiseSubmission={filterLanguageWiseSubmission} userId={userId?.toString() || ""} />
       <ProfilePageRightSection levelWiseSolvedQuestions={levelWiseSolvedQuestions} allQuestioinsLevelWise={allQuestioinsLevelWise} allSubmissions={allSubmissions} />
     </div>
   )

@@ -18,6 +18,8 @@ export interface IUser extends Document{
     isVerified: boolean,
     forgetPasswordExpiry: Date | null,
     solvedProblems: number,
+    skills: string[],
+    linkdin: string,
     solutions: Types.ObjectId[],
     submissions: Types.ObjectId[],
     solvedQuestions: Types.ObjectId[] | IProblem[],

@@ -4,6 +4,8 @@ import { Eye, FolderCheck, GraduationCap, MapPin, MessageCircle, Star, Tag } fro
 import { IUser } from '@/models/User'
 import { LevelWiseProblemType } from '@/app/(app)/problems/page'
 import { FilteredLanguageType } from '@/app/(app)/dashboard/[userId]/page'
+import Link from 'next/link'
+import { ObjectId } from 'mongoose'
 
 const languageName = {
     "cpp": "C++",
@@ -15,7 +17,7 @@ const languageName = {
 
 type languageNameType = keyof typeof languageName
 
-export default function ProfilePageLeftSecond({ fullUserInfo, filterLanguageWiseSubmission }: { fullUserInfo: IUser | null, filterLanguageWiseSubmission: FilteredLanguageType }) {
+export default function ProfilePageLeftSecond({ fullUserInfo, filterLanguageWiseSubmission, userId }: { fullUserInfo: IUser | null, filterLanguageWiseSubmission: FilteredLanguageType, userId: string }) {
     return (
         <div className="customBackground w-[20%] h-full  rounded-lg px-3 py-4">
             <div className="flex items-center gap-4 w-full">
@@ -29,7 +31,9 @@ export default function ProfilePageLeftSecond({ fullUserInfo, filterLanguageWise
             <div className="my-4 w-full max-h-48">
                 <p className='line-clamp-8'>{fullUserInfo?.bio}</p>
             </div>
-            <Button variant='outline' className='w-full mt-4'>Edit Profile</Button>
+            <Link href={`/profile/${userId}`}>
+            <Button variant='outline' className='w-full mt-4 cursor-pointer'>Edit Profile</Button>
+            </Link>
             <div className="my-8 flex flex-col gap-4 text-gray-400">
                 <div className="w-full flex gap-3 items-center">
                     <MapPin className='resize-custom w-6' />

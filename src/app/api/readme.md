@@ -946,3 +946,110 @@ Each submission object contains:
   ]
 }
 ```
+## Endpoint: `/api/user/update-user`
+
+### Description
+Updates the authenticated user’s profile information.  
+The request body is validated using `updateUserValidation` before updating the user in MongoDB.  
+Use this endpoint to allow users to update their name, email, avatar, or other profile fields.
+
+---
+
+### Method  
+`POST`
+
+---
+
+### Request Body
+
+| Field        | Type   | Required | Description                       |
+|--------------|--------|----------|-----------------------------------|
+| name         | string | ❌        | Updated name of the user           |
+| email        | string | ❌        | Updated email address              |
+| password     | string | ❌        | Updated password (if allowed)      |
+| avatar       | string | ❌        | URL of the user’s avatar image     |
+| anyOtherField| any    | ❌        | Any additional fields supported by your schema |
+
+---
+
+### Example Request
+```json
+{
+    "username": "John Doe",
+    "bio": "Hii I am John Doe",
+    "country": "India",
+    "unversity": "Jadavpur University",
+    "github": "xyz.gitub.com",
+    "linkdin": "xyz.linkdin.com"
+}
+```
+### Example Response
+
+The response will be a JSON object with the following fields:
+
+- **success** (boolean): Whether the request was successful.  
+- **message** (string): Additional information about the response.  
+- **user** (object): The updated user object.
+
+---
+
+### User Object Structure
+
+Each user object contains:
+
+- **_id** (string – MongoDB ObjectId): Unique ID of the user.  
+- **username** (string): User’s updated name.  
+- **bio** (string, optional): User’s biography or description.  
+- **country** (string, optional): User’s country.  
+- **unversity** (string, optional): User’s university or institution.  
+- **github** (string, optional): URL of the user’s GitHub profile.  
+- **linkdin** (string, optional): URL of the user’s LinkedIn profile.  
+- **email** (string): User’s email address.  
+- **userType** (string): Type of user (e.g., "user").  
+- **avatar** (string): URL of the user’s avatar image.  
+- **verifyCode** (string, optional): Verification code for the user account.  
+- **verifyCodeExpiry** (string – ISO timestamp, optional): Expiration of the verification code.  
+- **isVerified** (boolean): Whether the user has been verified.  
+- **forgetPasswordExpiry** (string – ISO timestamp, optional): Expiration timestamp for password reset requests.  
+- **solvedProblems** (number): Count of problems solved by the user.  
+- **solutions** (array of strings – MongoDB ObjectId): IDs of solutions submitted by the user.  
+- **submissions** (array of strings – MongoDB ObjectId): IDs of submissions made by the user.  
+- **solvedQuestions** (array of strings – MongoDB ObjectId): IDs of questions solved by the user.  
+- **createdAt** (string – ISO timestamp): Timestamp of when the user was created.  
+- **updatedAt** (string – ISO timestamp): Timestamp of the last update.
+
+### Example Success Response
+```json
+{
+    "success": true,
+    "message": "User updated successfully",
+    "user": {
+        "_id": "690380490...",
+        "username": "John Doe",
+    "bio": "Hii I am John Doe",
+    "country": "India",
+    "unversity": "Jadavpur University",
+    "github": "xyz.gitub.com",
+    "linkdin": "xyz.linkdin.com",
+        "email": "kdjas6@gmail.com",
+        "userType": "user",
+        "avatar": "https://firebasestorage.googleapis...5",
+        "verifyCode": "367299",
+        "verifyCodeExpiry": "2025-10-30T15:18:46.441Z",
+        "isVerified": true,
+        "forgetPasswordExpiry": null,
+        "solvedProblems": 1,
+        "solutions": [
+            "6905b278dcd0...e19"
+        ],
+        "submissions": [
+            "6903814e90612a...84d4"
+        ],
+        "solvedQuestions": [
+            "68ea889f173...177704"
+        ],
+        "createdAt": "2025-10-30T15:13:46.474Z",
+        "updatedAt": "2025-11-29T05:48:51.953Z",
+    }
+}
+```

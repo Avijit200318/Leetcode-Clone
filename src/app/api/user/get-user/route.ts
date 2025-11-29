@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
         const { searchParams } = new URL(req.url);
         const userId = searchParams.get("userId");
 
-        const user = await userModel.findById(userId)
+        const user = await userModel.findById(userId).select("-password")
             .populate({ path: "solvedQuestions", select: "" });
 
         if (!user) {

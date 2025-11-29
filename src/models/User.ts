@@ -1,7 +1,5 @@
 import mongoose, {Document, model, models, Schema, Types} from "mongoose";
 import { IProblem } from "./Problem";
-// linkdin
-// skills
 
 export interface IUser extends Document{
     username: string,
@@ -11,7 +9,7 @@ export interface IUser extends Document{
     userType?: string
     bio?: string,
     country?: string,
-    unversity?: string,
+    university?: string,
     github?: string,
     verifyCode: string,
     verifyCodeExpiry: Date,
@@ -54,7 +52,10 @@ const userSchema = new Schema<IUser>({
     github: {
         type: String
     },
-    unversity: {
+    linkdin: {
+        type: String
+    },
+    university: {
         type: String
     },
     country: {

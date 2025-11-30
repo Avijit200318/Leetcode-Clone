@@ -40,7 +40,6 @@ export default function page() {
     })
 
     const allValues = form.watch()
-    console.log(allValues)
 
     const fetchFullUserInfo = useCallback(async () => {
         try {

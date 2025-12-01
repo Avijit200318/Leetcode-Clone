@@ -1053,3 +1053,79 @@ Each user object contains:
     }
 }
 ```
+## Endpoint: `/api/solution/fetch-solution/9852938052948`
+
+### Description
+Fetches a **single solution** using its `solutionId`.  
+The solution is populated with the user’s details (`username` and `avatar`) via the `userId` reference.  
+Use this endpoint to display the details of a specific solution submitted by a user.
+
+---
+
+### Method  
+`GET`
+
+---
+
+### URL Parameters
+
+| Parameter     | Type   | Required | Description                              |
+|---------------|--------|----------|------------------------------------------|
+| `solutionId`  | string (MongoDB ObjectId) | ✅        | The unique ID of the solution to fetch. |
+
+---
+
+### Example Request
+```http
+GET /api/solution/6523f8c86b3c97b12c7df7ab
+```
+### Example Response
+
+The response will be a JSON object with the following fields:
+
+- **success** (boolean): Whether the request was successful.  
+- **message** (string): Additional information about the response.  
+- **solution** (object): The solution object.
+
+---
+
+### Solution Object Structure
+
+Each solution object contains:
+
+- **_id** (string – MongoDB ObjectId): Unique ID of the solution.  
+- **userId** (object – populated): Contains details of the user who submitted the solution.  
+  - **_id** (string – MongoDB ObjectId): Unique ID of the user.  
+  - **username** (string): Username of the user.  
+  - **avatar** (string): URL to the user’s profile picture.  
+- **problemId** (string – MongoDB ObjectId): ID of the associated problem.  
+- **title** (string): Title of the solution.  
+- **tags** (array, optional): List of relevant tags for the solution.  
+- **explanation** (string): Markdown-formatted explanation or notes about the solution.  
+- **sourceCode** (string): The actual code of the solution.  
+- **status** (string): Status of the solution (e.g., `Accepted`).  
+- **createdAt** (string – ISO timestamp): Timestamp of when the solution was created.  
+- **updatedAt** (string – ISO timestamp): Timestamp of the last update.
+### Example Success Response
+```json
+{
+  "success": true,
+  "message": "Solution fetched successfully",
+  "solution": {
+    "_id": "6523f8c86b3c97b12c7df7ab",
+    "userId": {
+      "_id": "650f4c8e2b3c97b12c7df1cd",
+      "username": "Avijit Hira",
+      "avatar": "https://example.com/avatar.jpg"
+    },
+    "problemId": "6510d8b26b3c97b12c7df456",
+    "title": "Two Sum Solution using HashMap",
+    "tags": ["JavaScript", "HashMap", "Array"],
+    "explanation": "## Approach\nWe ...",
+    "sourceCode": "function twoSum(nums, target) {...}",
+    "status": "Accepted",
+    "createdAt": "2025-10-26T08:30:00.000Z",
+    "updatedAt": "2025-10-26T08:30:00.000Z"
+  }
+}
+```

@@ -4,7 +4,7 @@ import { updateUserValidation } from "@/schemas/updateUserSchema";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
     await connectToDb()
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     if (!token) {

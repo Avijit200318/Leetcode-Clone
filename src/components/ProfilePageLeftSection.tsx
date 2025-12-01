@@ -1,11 +1,11 @@
+"use client";
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import { Eye, FolderCheck, GraduationCap, MapPin, MessageCircle, Star, Tag } from 'lucide-react'
 import { IUser } from '@/models/User'
-import { LevelWiseProblemType } from '@/app/(app)/problems/page'
 import { FilteredLanguageType } from '@/app/(app)/dashboard/[userId]/page'
 import Link from 'next/link'
-import { ObjectId } from 'mongoose'
+import { useSession } from 'next-auth/react';
 
 const languageName = {
     "cpp": "C++",
@@ -18,6 +18,9 @@ const languageName = {
 type languageNameType = keyof typeof languageName
 
 export default function ProfilePageLeftSecond({ fullUserInfo, filterLanguageWiseSubmission, userId }: { fullUserInfo: IUser | null, filterLanguageWiseSubmission: FilteredLanguageType, userId: string }) {
+    const { data: session, status } = useSession();
+    console.log(session)
+
     return (
         <div className="customBackground w-[20%] h-full  rounded-lg px-3 py-4">
             <div className="flex items-center gap-4 w-full">
@@ -31,9 +34,11 @@ export default function ProfilePageLeftSecond({ fullUserInfo, filterLanguageWise
             <div className="my-4 w-full max-h-48">
                 <p className='line-clamp-8'>{fullUserInfo?.bio}</p>
             </div>
-            <Link href={`/profile/${userId}`}>
-            <Button variant='outline' className='w-full mt-4 cursor-pointer'>Edit Profile</Button>
-            </Link>
+            {session?.user._id === userId &&
+                <Link href={`/profile/${userId}`}>
+                    <Button variant='outline' className='w-full mt-4 cursor-pointer'>Edit Profile</Button>
+                </Link>
+            }
             <div className="my-8 flex flex-col gap-4 text-gray-400">
                 <div className="w-full flex gap-3 items-center">
                     <MapPin className='resize-custom w-6' />
@@ -49,7 +54,7 @@ export default function ProfilePageLeftSecond({ fullUserInfo, filterLanguageWise
                 </div>
                 <div className="w-full flex gap-3 items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" className='w-7' viewBox="0 0 640 640"><path d="M512 96L127.9 96C110.3 96 96 110.5 96 128.3L96 511.7C96 529.5 110.3 544 127.9 544L512 544C529.6 544 544 529.5 544 511.7L544 128.3C544 110.5 529.6 96 512 96zM231.4 480L165 480L165 266.2L231.5 266.2L231.5 480L231.4 480zM198.2 160C219.5 160 236.7 177.2 236.7 198.5C236.7 219.8 219.5 237 198.2 237C176.9 237 159.7 219.8 159.7 198.5C159.7 177.2 176.9 160 198.2 160zM480.3 480L413.9 480L413.9 376C413.9 351.2 413.4 319.3 379.4 319.3C344.8 319.3 339.5 346.3 339.5 374.2L339.5 480L273.1 480L273.1 266.2L336.8 266.2L336.8 295.4L337.7 295.4C346.6 278.6 368.3 260.9 400.6 260.9C467.8 260.9 480.3 305.2 480.3 362.8L480.3 480z" fill='gray' /></svg>
-                    <h3 className="truncate w-[calc(100%-2rem)]">{fullUserInfo?.linkdin}</h3>
+                    <h3 className="truncate w-[calc(100%-2rem)]">{fullUserInfo?.linkdin || "add linkdin"}</h3>
                 </div>
                 <div className="w-full flex gap-3 items-start">
                     <Tag className='resize-custom w-6' />
@@ -95,10 +100,10 @@ export default function ProfilePageLeftSecond({ fullUserInfo, filterLanguageWise
                 <h1 className="font-semibold mb-3">Languages</h1>
                 <div className="flex flex-col gap-3">
                     {Object.entries(filterLanguageWiseSubmission).filter(([first, second]) => second > 0).map(([first, second], index) =>
-                    <div key={index} className="flex w-full justify-between items-center">
-                        <h3 className="px-4 py-0.5 rounded-full bg-[var(--sidebar-accent)] text-sm text-gray-400">{languageName[first as languageNameType]}</h3>
-                        <h3 className="text-sm text-gray-400 mr-2"><span className="font-semibold text-white">{second}</span> problems solved</h3>
-                    </div>
+                        <div key={index} className="flex w-full justify-between items-center">
+                            <h3 className="px-4 py-0.5 rounded-full bg-[var(--sidebar-accent)] text-sm text-gray-400">{languageName[first as languageNameType]}</h3>
+                            <h3 className="text-sm text-gray-400 mr-2"><span className="font-semibold text-white">{second}</span> problems solved</h3>
+                        </div>
                     )}
                 </div>
                 <div className="flex flex-col gap-3 border-t pt-2">

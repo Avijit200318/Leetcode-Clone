@@ -15,11 +15,11 @@ export async function GET(req: NextRequest, {params }: { params: { solutionId: s
             success: true,
             message: "Solution fetched successfully",
             solution
-        }, {status: 200})
+        }, {status: 200});
     } catch (error) {
         return NextResponse.json({
             success: false,
             message: "Something went wrong while fetching solution"
-        }, {status: 500})
+        }, {status: 500});
     }
 }

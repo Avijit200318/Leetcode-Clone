@@ -96,6 +96,9 @@ const userSchema = new Schema<IUser>({
     solvedQuestions: [{
         type: Schema.Types.ObjectId,
         ref: "Problem"
+    }],
+    skills: [{
+        type: String
     }]
 }, {timestamps: true});
 

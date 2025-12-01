@@ -59,9 +59,10 @@ export default function ProfilePageLeftSecond({ fullUserInfo, filterLanguageWise
                 <div className="w-full flex gap-3 items-start">
                     <Tag className='resize-custom w-6' />
                     <div className="truncate w-[calc(100%-1.5rem)] flex gap-2 flex-wrap">
-                        <h3 className="px-4 py-0.5 text-sm bg-[var(--sidebar-accent)] rounded-full">html</h3>
-                        <h3 className="px-4 py-0.5 text-sm bg-[var(--sidebar-accent)] rounded-full">css</h3>
-                        <h3 className="px-4 py-0.5 text-sm bg-[var(--sidebar-accent)] rounded-full">js</h3>
+                        {(fullUserInfo?.skills.length || 0) > 0 && fullUserInfo?.skills.map((skill, index) =>
+                            <h3 key={index} className="px-4 py-0.5 text-sm bg-[var(--sidebar-accent)] rounded-full">{skill}</h3>
+                        )}
+                        {(fullUserInfo?.skills.length || 0) === 0 && <h3 className=''>Add Skills</h3>}
                     </div>
                 </div>
             </div>

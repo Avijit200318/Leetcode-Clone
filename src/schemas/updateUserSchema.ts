@@ -8,4 +8,7 @@ export const updateUserValidation = z.object({
     university: z.string().min(3, { message: "University name must be atleast 3 charecter long" }),
     github: z.string(),
     linkdin: z.string(),
+    skills: z.array(
+        z.string().min(3, { message: "Skills must be 3 charecters long" })
+    )
 })

@@ -36,10 +36,12 @@ export default function page() {
             university: "",
             github: "",
             linkdin: "",
+            skills: []
         }
     })
 
-    const allValues = form.watch()
+    const allValues = form.watch();
+    console.log(allValues)
 
     const fetchFullUserInfo = useCallback(async () => {
         try {
@@ -55,6 +57,7 @@ export default function page() {
                 university: res.data.user.university,
                 github: res.data.user.github,
                 linkdin: res.data.user.linkdin,
+                skills: res.data.user.skills || []
             });
         } catch (error) {
             if (isAxiosError(error) && error.response) {
@@ -101,8 +104,8 @@ export default function page() {
                     <p className="text-gray-500">Leetcode ID: {(fullUserInfo?._id || "").toString()}</p>
                 </div>
             </div>
-            <div className="w-full h-[84%] relative customBackground">
-                <div className="absolute top-[45%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-full h-full flex justify-center items-center">
+            <div className="w-full h-[100%] relative customBackground">
+                <div className="absolute top-[42%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-full h-full flex justify-center items-center">
                     <div className="w-[20%]">
                         <h2 className="w-full bg-blue-400 py-4 px-8 text-lg rounded-md">Basic Info</h2>
                         <div className="flex items-center gap-4 px-4 py-3 cursor-pointer text-gray-500">
@@ -126,7 +129,7 @@ export default function page() {
                             <h3 className="">Orders</h3>
                         </div>
                     </div>
-                    <div className="w-[60%] h-[40rem] customBackground rounded-md py-4 px-8 border">
+                    <div className="w-[60%] h-[48rem] customBackground rounded-md py-4 px-8 border">
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-4'>
                                 <h1 className="font-semibold pt-2 pb-4">Basic Info</h1>
@@ -210,7 +213,32 @@ export default function page() {
                                         </FormItem>
                                     )}
                                 />
-                                <div className="w-full flex justify-center mt-4">
+                                <FormField
+                                    name="skills"
+                                    control={form.control}
+                                    render={({ field }) => (
+                                        <FormItem className='flex gap-12'>
+                                            <FormLabel className='w-32'>Skills</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="Skills (add space seperated tags | Max 6)" value={Array.isArray(field.value)? field.value.join(" ") : field.value} 
+                                                onChange={(e) => {
+                                                    const inputValue = e.target.value;
+                                                    const allSkills = inputValue.split(" ").map((ele) => ele.trim());
+                                                    form.setValue("skills", allSkills)
+                                                }} className='text-base p-4 h-11 w-[60%]' autoComplete='off' />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <div className="w-full flex justify-center">
+                                    <div className="w-[60%] flex gap-2">
+                                        {allValues.skills.map((skill, index) => 
+                                        <h3 key={index} className="px-4 py-1 bg-[var(--sidebar-accent)] rounded-full">{skill}</h3>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="w-full flex justify-center mt-3">
                                     <Button disabled={isSubmitting} type='submit' className='w-[60%] font-semibold cursor-pointer h-10 text-base'>{isSubmitting ? <><Loader2 className='resize-custom animate-spin w-7 h-7' /> Please wait</> : 'Save'}</Button>
                                 </div>
                             </form>

@@ -9,8 +9,9 @@ import { codeSubmissionResultType } from '@/types/ApiResponse'
 import { formatDate } from '@/helpers/formatDate'
 import { IProblem } from '@/models/Problem'
 import { timeAgoFunction } from '@/helpers/timeAgoFunction'
+import Link from 'next/link'
 
-export default function ProfilePageRightSection({ levelWiseSolvedQuestions, allQuestioinsLevelWise, allSubmissions }: { levelWiseSolvedQuestions: LevelWiseProblemType, allQuestioinsLevelWise: LevelWiseProblemType, allSubmissions: codeSubmissionResultType[]}) {
+export default function ProfilePageRightSection({ levelWiseSolvedQuestions, allQuestioinsLevelWise, allSubmissions }: { levelWiseSolvedQuestions: LevelWiseProblemType, allQuestioinsLevelWise: LevelWiseProblemType, allSubmissions: codeSubmissionResultType[] }) {
   console.log(allSubmissions)
 
   return (
@@ -28,7 +29,7 @@ export default function ProfilePageRightSection({ levelWiseSolvedQuestions, allQ
           <div className="w-full h-full flex gap-3 p-2">
             <div className="w-[75%] h-full bg-[var(--popover)] rounded-md overflow-hidden relative">
               <div className="absolute top-[35%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
-              <CustomRadialChart totalLevelWiseProblem={allQuestioinsLevelWise} userTotalLevelProblem={levelWiseSolvedQuestions} />
+                <CustomRadialChart totalLevelWiseProblem={allQuestioinsLevelWise} userTotalLevelProblem={levelWiseSolvedQuestions} />
               </div>
             </div>
             <div className="w-[25%] h-full flex flex-col gap-3">
@@ -90,17 +91,19 @@ export default function ProfilePageRightSection({ levelWiseSolvedQuestions, allQ
             </div>
           </div>
           <div className="flex gap-1 items-center text-gray-300 cursor-pointer">
-            <h3 className="">View all solutions</h3>
+            <Link href={`/all-submissions/${allSubmissions[0]?.userId}`}>
+              <h3 className="">View all solutions</h3>
+            </Link>
             <ChevronRight className='resize-custom w-5' />
           </div>
         </div>
 
         <div className="w-full h-[calc(100%-5rem)] px-4 mt-2">
-          {[...allSubmissions].reverse().slice(0, 9).map((ele, index) => 
-          <div key={index} className={`w-full flex items-center justify-between px-4 py-4 rounded cursor-pointer ${index % 2 == 0? 'bg-[var(--sidebar-accent)]' : ''}`}>
-            <h2 className="font-semibold">{(ele.problemId as IProblem).title}</h2>
-            <p className="text-gray-500 text-sm font-semibold">{timeAgoFunction(ele.createdAt as Date)}</p>
-          </div>
+          {[...allSubmissions].reverse().slice(0, 9).map((ele, index) =>
+            <div key={index} className={`w-full flex items-center justify-between px-4 py-4 rounded cursor-pointer ${index % 2 == 0 ? 'bg-[var(--sidebar-accent)]' : ''}`}>
+              <h2 className="font-semibold">{(ele.problemId as IProblem).title}</h2>
+              <p className="text-gray-500 text-sm font-semibold">{timeAgoFunction(ele.createdAt as Date)}</p>
+            </div>
           )}
         </div>
       </div>

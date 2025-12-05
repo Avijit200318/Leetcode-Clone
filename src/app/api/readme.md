@@ -1129,3 +1129,86 @@ Each solution object contains:
   }
 }
 ```
+## Endpoint: `/api/code/fetch-submission?submissionId=5093824905720934`
+
+### Description
+Fetches **a single submission’s full details** using its `submissionId` (passed as a query parameter).  
+This endpoint also populates the associated problem to return useful metadata (e.g., the problem title).
+
+Use this endpoint to display **detailed output/code/result of a specific submission** made by a logged-in user.
+
+---
+
+### Method  
+`GET`
+
+---
+
+### Authentication  
+This route requires **NextAuth JWT authentication**.  
+If the user is not authenticated, the endpoint will return:
+
+```json
+{
+  "success": false,
+  "message": "Unauthorized"
+}
+```
+---
+### Query Parameters
+| Parameter      | Type                      | Required | Description                                                  |
+| -------------- | ------------------------- | -------- | ------------------------------------------------------------ |
+| `submissionId` | string (MongoDB ObjectId) | ✅        | The ID of the submission whose details you want to retrieve. |
+
+### Example Request
+```http
+GET /api/submission/get-submission?submissionId=6531ab72c45d9f001234abcd
+```
+### Example Response
+
+The response will be a JSON object with the following fields:
+
+- **success** (boolean): Whether the request was successful.  
+- **message** (string): Additional information about the response.  
+- **submissionOutput** (object): The submission object.
+
+---
+
+### Submission Object Structure
+
+Submission object contains:
+
+- **_id** (string – MongoDB ObjectId): Unique ID of the submission.
+- **userId** (string – MongoDB ObjectId): ID of the user who submitted.
+- **problemId** (object – populated): Contains metadata of the associated problem.
+  - **_id** (string – MongoDB ObjectId)
+  - **title** (string): Title of the problem.
+- **language** (string): Programming language used for the submission.
+- **sourceCode** (string): Code submitted by the user.
+- **status** (string): Submission result (e.g., *Accepted*, *Wrong Answer*).
+- **output** (string, optional): Execution output (if stored).
+- **error** (string, optional): Error message if the submission failed.
+- **createdAt** (string – ISO timestamp): Timestamp when the submission was created.
+- **updatedAt** (string – ISO timestamp): Timestamp when the submission was last updated.
+
+### Example Success Response
+```json
+{
+  "success": true,
+  "message": "Submission details found successfully",
+  "submissionOutput": {
+    "_id": "6531ab72c45d9f001234abcd",
+    "userId": "650f4c8e2b3c97b12c7df1cd",
+    "problemId": {
+      "_id": "6510d8b26b3c97b12c7df456",
+      "title": "Two Sum"
+    },
+    "language": "JavaScript",
+    "sourceCode": "function twoSum(nums, target) { ... }",
+    "status": "Accepted",
+    "output": "[0,1]",
+    "createdAt": "2025-10-29T12:15:22.000Z",
+    "updatedAt": "2025-10-29T12:15:22.000Z"
+  }
+}
+```

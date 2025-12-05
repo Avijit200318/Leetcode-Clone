@@ -1,4 +1,4 @@
-import {Schema, Types, Document, model, models} from "mongoose";
+import { Schema, Types, Document, model, models } from "mongoose";
 
 export interface ISubmission extends Document {
     userId: Types.ObjectId,
@@ -8,6 +8,8 @@ export interface ISubmission extends Document {
     memory: number,
     sourceCode: string,
     problemId: Types.ObjectId,
+    createdAt?: Date,
+    updatedAt?: Date
 }
 
 const submissionSchema = new Schema<ISubmission>({
@@ -41,7 +43,7 @@ const submissionSchema = new Schema<ISubmission>({
         required: [true, "User id is required"],
         ref: "Problem"
     }
-}, {timestamps: true});
+}, { timestamps: true });
 
 const Submission = models?.Submission || model<ISubmission>("Submission", submissionSchema);
 

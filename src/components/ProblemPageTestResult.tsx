@@ -17,7 +17,7 @@ interface ProblemPageTestResultType {
     problemInfo: IProblem,
     session: Session | null,
     submissionOutput: codeSubmissionResultType | null,
-    setSubmissionOutput: React.Dispatch<React.SetStateAction<codeSubmissionResultType | null>> 
+    setSubmissionOutput: React.Dispatch<React.SetStateAction<codeSubmissionResultType | null>>
 }
 
 export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme, problemInfo, session, submissionOutput, setSubmissionOutput }: ProblemPageTestResultType) {
@@ -122,18 +122,18 @@ export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme
                             <p className={`text-sm ${theme === "dark" ? 'text-neutral-400' : ''}`}>Submitted at {formatDate(submissionOutput.createdAt as Date)}</p>
                         </div>
                     </div>
-                    {submissionOutput.status === "Accepted" ? <Link href={`/add-solution?id=${submissionOutput._id}`}><Button className='bg-green-500 text-white font-semibold cursor-pointer hover:bg-green-600 duration-300'><SquarePen className='resize-custom w-4 h-4' /> Solution</Button></Link>:
-                    <Button onClick={handleSubmissionClose} className='bg-red-500 text-white font-semibold  cursor-pointer hover:bg-red-600 duration-300'><X className='resize-custom w-5 h-5' /> Close</Button>
-                }
+                    {submissionOutput.status === "Accepted" ? <Link href={`/add-solution?id=${submissionOutput._id}`}><Button className='bg-green-500 text-white font-semibold cursor-pointer hover:bg-green-600 duration-300'><SquarePen className='resize-custom w-4 h-4' /> Solution</Button></Link> :
+                        <Button onClick={handleSubmissionClose} className='bg-red-500 text-white font-semibold  cursor-pointer hover:bg-red-600 duration-300'><X className='resize-custom w-5 h-5' /> Close</Button>
+                    }
                 </div>
                 <div className="w-1/2 p-4 rounded-md my-6 bg-[var(--sidebar-accent)] flex flex-col gap-2">
                     <div className="w-full flex items-center justify-between">
-                        <h2 className={`flex gap-2 items-center ${submissionOutput.status === "Accepted"? '' : 'text-red-500'}`}><Clock4 className="resize-custom w-4 h-4" /> Runtime</h2>
-                        <Info className={`resize-custom w-4 h-4 ${submissionOutput.status === "Accepted"? '' : 'text-red-500'}`} />
+                        <h2 className={`flex gap-2 items-center ${submissionOutput.status === "Accepted" ? '' : 'text-red-500'}`}><Clock4 className="resize-custom w-4 h-4" /> Runtime</h2>
+                        <Info className={`resize-custom w-4 h-4 ${submissionOutput.status === "Accepted" ? '' : 'text-red-500'}`} />
                     </div>
-                    <h2 className={`text-xl ${submissionOutput.status === "Accepted"? '' : 'text-red-500'}`}>{ submissionOutput.status === "Accepted"? `${(submissionOutput.time * 1000).toFixed(2)} ms` : 'N/A'}</h2>
-                    {submissionOutput.status === "Accepted" && 
-                    <h2 className="flex items-center gap-2 text-blue-500"><Sparkles className='resize-custom w-4 h-4' /> Analyze complexity</h2>
+                    <h2 className={`text-xl ${submissionOutput.status === "Accepted" ? '' : 'text-red-500'}`}>{submissionOutput.status === "Accepted" ? `${(submissionOutput.time * 1000).toFixed(2)} ms` : 'N/A'}</h2>
+                    {submissionOutput.status === "Accepted" &&
+                        <h2 className="flex items-center gap-2 text-blue-500"><Sparkles className='resize-custom w-4 h-4' /> Analyze complexity</h2>
                     }
                 </div>
 
@@ -146,8 +146,8 @@ export default function ProblemPageTestResult({ codeOutput, isCodeRunning, theme
                 </div>
                 <div className="w-full border rounded-md overflow-hidden mb-8">
                     <MDEditor.Markdown
-                    source={`\`\`\`\n${submissionOutput.sourceCode}\n\`\`\``}
-                    className="markdown-body customTextWhite w-full" style={{ background: "var(--card)"}}  />
+                        source={`\`\`\`\n${submissionOutput.sourceCode}\n\`\`\``}
+                        className="markdown-body customTextWhite w-full" style={{ background: "var(--card)" }} />
                 </div>
             </div>
             }

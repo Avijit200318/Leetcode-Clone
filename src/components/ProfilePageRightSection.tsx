@@ -6,7 +6,6 @@ import CustomContributorGraph from './CustomContributorGraph'
 import { LevelWiseProblemType } from '@/app/(app)/problems/page'
 import CustomRadialChart from './CustomRadialChart'
 import { codeSubmissionResultType } from '@/types/ApiResponse'
-import { formatDate } from '@/helpers/formatDate'
 import { IProblem } from '@/models/Problem'
 import { timeAgoFunction } from '@/helpers/timeAgoFunction'
 import Link from 'next/link'
@@ -99,11 +98,13 @@ export default function ProfilePageRightSection({ levelWiseSolvedQuestions, allQ
         </div>
 
         <div className="w-full h-[calc(100%-5rem)] px-4 mt-2">
-          {[...allSubmissions].reverse().slice(0, 9).map((ele, index) =>
-            <div key={index} className={`w-full flex items-center justify-between px-4 py-4 rounded cursor-pointer ${index % 2 == 0 ? 'bg-[var(--sidebar-accent)]' : ''}`}>
+          {[...allSubmissions].reverse().slice(0, 8).map((ele, index) =>
+            <Link href={`/submission/${ele._id}`} key={index}>
+            <div className={`w-full flex items-center justify-between px-4 py-4 rounded cursor-pointer ${index % 2 == 0 ? 'bg-[var(--sidebar-accent)]' : ''}`}>
               <h2 className="font-semibold">{(ele.problemId as IProblem).title}</h2>
               <p className="text-gray-500 text-sm font-semibold">{timeAgoFunction(ele.createdAt as Date)}</p>
             </div>
+            </Link>
           )}
         </div>
       </div>

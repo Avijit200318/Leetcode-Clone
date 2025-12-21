@@ -10,12 +10,12 @@ export async function middleware(request: NextRequest) {
   }
 
   // admin condition
-  if (token && token.userType === "user" && url.pathname.startsWith("/add-problem")) {
+  if (token && token.userType === "user" && (url.pathname.startsWith("/add-problem") || url.pathname.startsWith("/update-problem"))) {
     return NextResponse.redirect(new URL(`/dashboard/${token._id}`, request.url));
   }
 
   // protected route
-  if (!token && (url.pathname.startsWith("/dashboard") || url.pathname.startsWith("/add-problem") || url.pathname.startsWith("/add-solution") || url.pathname.startsWith("/profile") || url.pathname.startsWith("/all-submissions") || url.pathname.startsWith("/submission"))) {
+  if (!token && (url.pathname.startsWith("/dashboard") || url.pathname.startsWith("/add-problem") || url.pathname.startsWith("/update-problem") || url.pathname.startsWith("/add-solution") || url.pathname.startsWith("/profile") || url.pathname.startsWith("/all-submissions") || url.pathname.startsWith("/submission"))) {
     return NextResponse.redirect(new URL('/sign-in', request.url));
   }
 
@@ -36,6 +36,7 @@ export const config = {
     '/add-solution/:path*',
     '/profile/:path*',
     '/all-submissions/:path*',
-    '/submission/:path*'
+    '/submission/:path*',
+    '/update-problem/:path*'
   ]
 }

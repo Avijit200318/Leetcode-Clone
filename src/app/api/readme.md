@@ -1212,3 +1212,99 @@ Submission object contains:
   }
 }
 ```
+## Endpoint: `/api/problem/update-problem?problemId=67435923045...`
+
+### Description
+Updates an existing **problem** using its `problemId`.  
+This endpoint requires authentication and validates the request body using the `createProblemValidation` schema before updating the problem.
+
+---
+
+### Method
+`PATCH`
+
+---
+
+### Authentication
+🔐 **Required**  
+Uses **NextAuth JWT**.  
+If the user is not authenticated, the API returns an `Unauthorized` response.
+
+---
+
+### Query Parameters
+
+| Parameter   | Type                      | Required | Description                              |
+|------------|---------------------------|----------|------------------------------------------|
+| problemId  | string (MongoDB ObjectId) | ✅        | The ID of the problem to be updated.     |
+
+---
+
+### Request Body
+
+The request body must follow the **Create Problem Validation Schema** (`createProblemValidation`).
+
+> ⚠️ Any invalid or missing field will result in a validation error.
+
+**Common fields may include (example):**
+- `title` (string)
+- `description` (string)
+- `difficulty` (string)
+- `tags` (array of strings)
+- `constraints` (string)
+- `examples` (array)
+- `starterCode` (string)
+
+*(Exact fields depend on your schema definition)*
+
+---
+
+### Example Request
+
+```json
+{
+  "title": "Two Sum",
+  "difficulty": "Easy",
+  "tags": ["Array", "HashMap"],
+  "description": "Find two numbers such that they add up to a target."
+}
+```
+
+### Example Response
+
+The response will be a JSON object with the following fields:
+
+- **success** (boolean): Whether the update was successful.  
+- **message** (string): Additional information about the response.  
+- **problem** (object): The updated problem object.
+
+---
+
+### Problem Object Structure
+
+Each problem object contains:
+
+- **_id** (string – MongoDB ObjectId): Unique ID of the problem.  
+- **title** (string): Title of the problem.  
+- **description** (string): Full problem description.  
+- **difficulty** (string): Difficulty level (`Easy` / `Medium` / `Hard`).  
+- **tags** (array): List of problem tags.  
+- **createdAt** (string – ISO timestamp): When the problem was created.  
+- **updatedAt** (string – ISO timestamp): When the problem was last updated.  
+### Example Success Response
+```json
+{
+  "success": true,
+  "message": "Problem updated successfully",
+  "problem": {
+    "_id": "6510d8b26b3c97b12c7df456",
+    "title": "Two Sum",
+    "difficulty": "Easy",
+    "tags": ["Array", "HashMap"],
+    "description": "Find two numbers such that they add up to a target.",
+    "createdAt": "2025-10-20T10:15:00.000Z",
+    "updatedAt": "2025-11-29T08:45:22.000Z"
+  }
+}
+
+```

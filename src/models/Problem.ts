@@ -2,9 +2,9 @@ import {Document, model, models, Schema, Types} from "mongoose";
 import { ISimilarQuestion } from "./SimilarQuestion";
 import { ISolution } from "./Solution";
 
-export interface ITextCase {
-    input: String,
-    output: String
+export interface ITestCase {
+    input: string,
+    output: string
 }
 
 export interface IProblem extends Document {
@@ -13,7 +13,7 @@ export interface IProblem extends Document {
     description: string,
     examples: string,
     constraints: string,
-    testCases: ITextCase[],
+    testCases: ITestCase[],
     like?: number,
     dislike?: number,
     topics: string,

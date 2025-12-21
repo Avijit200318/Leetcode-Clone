@@ -90,6 +90,7 @@ export default function page() {
     setIsCodeRunning(true);
     setCurrentTab("testResult");
     setCodeOutput(null);
+    setSubmissionOutput(null);
     try {
       const data = {
         sourceCode: sourceCode,

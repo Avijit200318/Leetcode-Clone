@@ -22,7 +22,7 @@ import axios from 'axios';
 import { ApiResponse } from '@/types/ApiResponse';
 import { toast } from 'sonner';
 import { useParams, useRouter } from 'next/navigation';
-import { IProblem, ITestCase } from '@/models/Problem';
+import { IProblem } from '@/models/Problem';
 
 
 export default function page() {

@@ -78,7 +78,9 @@ export default function page() {
             <h1 className='px-4 py-1.5 h-10 transition-all duration-300 cursor-pointer hover:bg-[var(--card)] rounded-md'>Feedback</h1>
             <h1 className='px-4 py-1.5 h-10 transition-all duration-300 cursor-pointer hover:bg-[var(--card)] rounded-md'>Interview</h1>
           </div>
-          <Button className='bg-green-500 text-white font-semibold cursor-pointer hover:bg-green-600 duration-300'><SquarePen className='resize-custom w-4 h-4' /> Solve More</Button>
+          <Link href="/problems">
+            <Button className='bg-green-500 text-white font-semibold cursor-pointer hover:bg-green-600 duration-300'><SquarePen className='resize-custom w-4 h-4' /> Solve More</Button>
+          </Link>
         </div>
         <div className="w-full h-18 py-2 flex justify-between items-center">
           <div className="flex items-center gap-4">
@@ -100,7 +102,7 @@ export default function page() {
           </div>
           <Shuffle className='resize-custom w-5 text-gray-400' />
         </div>
-        <ScrollArea className="w-full h-[calc(100vh-12rem)]">
+        <ScrollArea className="w-full h-[calc(100vh-12rem)] pr-3">
           {isLoading && <div>
             <Skeleton className='w-full h-11'></Skeleton>
             <Skeleton className='w-full h-11 my-2'></Skeleton>

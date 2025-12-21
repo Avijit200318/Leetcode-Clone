@@ -8,6 +8,7 @@ import MDEditor from '@uiw/react-md-editor';
 import axios from 'axios';
 import { Clock4, Info, Sparkles, SquarePen } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner';
@@ -59,7 +60,9 @@ export default function page() {
                 <p className="text-sm dark:'text-neutral-400">Submitted at {formatDate(submissionOutput.createdAt as Date)}</p>
               </div>
             </div>
+            <Link href={`/add-solution?id=${submissionId}`}>
             <Button className='bg-green-500 text-white font-semibold cursor-pointer hover:bg-green-600 duration-300'><SquarePen className='resize-custom w-4 h-4' /> Solution</Button>
+            </Link>
           </div>
           <div className="w-[60%] border p-4 rounded-lg">
             <div className="w-1/2 p-4 rounded-md mt-3 bg-[var(--sidebar-accent)] flex flex-col gap-2">

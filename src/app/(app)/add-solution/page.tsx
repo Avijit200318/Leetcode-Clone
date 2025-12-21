@@ -27,7 +27,6 @@ import { Types } from 'mongoose';
 import Link from 'next/link';
 
 export default function page() {
-  let code = `#include<bits/stdc++.h>\nusing name spacestd\nint main(){\nint a;\ncin>> a\nreturn 0\n}`;
 
   const [mounted, setMounted] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);

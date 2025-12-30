@@ -1,3 +1,9 @@
+# Overview
+This LeetCode Clone is a comprehensive platform built for developers to practice coding, run test cases, and share solutions. It features a professional-grade development environment using the **Monaco Editor** and executes code across 5 languages via **JudgeAPI**. Users can track their progress, engage with an AI **Leet Bot**, and contribute to the community via Markdown-based solution posts.
+
+# ER Diagram
+![Erdiagram](https://github.com/user-attachments/assets/f4e9049a-5196-426e-b567-cd028314c9ff)
+
 # API Documentation
 
 ## Endpoint: `/api/auth/sign-up`
